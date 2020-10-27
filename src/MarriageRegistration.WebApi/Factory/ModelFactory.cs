@@ -423,5 +423,84 @@ namespace MarriageRegistration.WebApi.Factory
 
             return request;
         }
+
+        public static MarriageRegistrationResponseDomainModel CreateApprovedResponse(GetItemResponse response)
+        {
+            var marriageRegistrationResponseDomainModel = new MarriageRegistrationResponseDomainModel
+            {
+                httpStatusCode = response.HttpStatusCode,
+                marriageRegistrationResponseEntity = CreateMarriageRegistrationResponseEntityModel(response),
+            };
+
+            return marriageRegistrationResponseDomainModel;
+        }
+
+        private static MarriageRegistrationResponseEntity CreateMarriageRegistrationResponseEntityModel(GetItemResponse response)
+        {
+            var marriageRegistrationResponseEntity = new MarriageRegistrationResponseEntity
+            {
+                ApplicationId = response.Item["ApplicationId"].N,
+                CertificateNumber = response.Item["CertificateId"].S,
+                ApplicantDistrict = response.Item["applicantDistrict"].S,
+                ApplicantTaluka = response.Item["applicantTaluka"].S,
+                MarriageDate = response.Item["MarriageDate"].S,
+                MarriagePlace = response.Item["marriagePlace"].S,
+                LawOfMarriage = response.Item["lawOfMarriage"].S,
+                DocumentsPresented = response.Item["documents_presented"].S,
+                IsMarriageRegisteredAlready = response.Item["isMarriageRegisterAlready"].BOOL,
+                SubmissionDate = response.Item["submissionDate"].S,
+
+                //Husbands's Details
+                HusbandFirstName = response.Item["husbandFirstName"].S,
+                HusbandMiddleName = response.Item["husbandMiddleName"].S,
+                HusbandLastName = response.Item["husbandLastName"].S,
+                UidOfHusband = response.Item["uidOfHusband"].S,
+                OtherNameOfHusband = response.Item["otherNameOfHusband"].S,
+                ReligionByBirthOfHusband = response.Item["religionByBirthOfHusband"].S,
+                ReligionByAdoptionOfHusband = response.Item["religionByAdoptionOfHusband"].S,
+                AgeOfHusband = response.Item["ageOfHusband"].S,
+                OccupationOfHusbandWithAddress = response.Item["occupationOfHusbandWithAddress"].S,
+                StatusOfHusbandAtMarriage = response.Item["statusOfHusbandAtMarriage"].S,
+                AddressOfHusband = response.Item["addressOfHusband"].S,
+
+                //Wife's Details
+                WifeFirstName = response.Item["wifeFirstName"].S,
+                WifeMiddleName = response.Item["wifeMiddleName"].S,
+                WifeLastName = response.Item["wifeLastName"].S,
+                UidOfWife = response.Item["uidOfWife"].S,
+                OtherNameOfWife = response.Item["otherNameOfWife"].S,
+                ReligionByBirthOfWife = response.Item["religionByBirthOfWife"].S,
+                ReligionByAdoptionOfWife = response.Item["religionByAdoptionOfWife"].S,
+                AgeOfWife = response.Item["ageOfWife"].S,
+                StatusOfWifeAtMarriage = response.Item["statusOfWifeAtMarriage"].S,
+                AddressOfWifeBeforeMarriage = response.Item["addressOfWifeBeforeMarriage"].S,
+
+                //Witness Details
+                NameofWitness1 = response.Item["nameOfWitness1"].S,
+                UidOfWitness1 = response.Item["uidOfWitness1"].S,
+                AddressOfWitness1 = response.Item["addressOfWitness1"].S,
+                OccupationOfWitness1WithAddress = response.Item["occupationOfWitness1WithAddress"].S,
+                RelationWithCoupleOfWitness1 = response.Item["relationWithCoupleOfWitness1"].S,
+                NameofWitness2 = response.Item["nameOfWitness2"].S,
+                UidOfWitness2 = response.Item["uidOfWitness2"].S,
+                AddressOfWitness2 = response.Item["addressOfWitness2"].S,
+                OccupationOfWitness2WithAddress = response.Item["occupationOfWitness2WithAddress"].S,
+                RelationWithCoupleOfWitness2 = response.Item["relationWithCoupleOfWitness2"].S,
+                NameOfWitness3 = response.Item["nameOfWitness3"].S,
+                UidOfWitness3 = response.Item["uidOfWitness3"].S,
+                AddressOfWitness3 = response.Item["addressOfWitness3"].S,
+                OccupationOfWitness3WithAddress = response.Item["occupationOfWitness3WithAddress"].S,
+                RelationWithCoupleOfWitness3 = response.Item["relationWithCoupleOfWitness3"].S,
+
+                //Priest Details
+                PriestName = response.Item["priestName"].S,
+                PriestAddress = response.Item["priestAddress"].S,
+                PriestReligion = response.Item["priestReligion"].S,
+                PriestAge = response.Item["priestAge"].S,
+
+            };
+
+            return marriageRegistrationResponseEntity;
+        }
     }   
 }

@@ -118,7 +118,7 @@ namespace MarriageRegistration.WebApi.Controllers
 
             StatusCode((int)response.HttpStatusCode);
 
-            return ModelFactory.CreateResponse(response);
+            return ModelFactory.CreateApprovedResponse(response);
         }
 
         [HttpDelete]
