@@ -123,16 +123,14 @@ namespace MarriageRegistration.WebApi.Controllers
 
         [HttpDelete]
         [Route("reject/{id}")]
-        public async Task<MarriageRegistrationResponseDomainModel> DeletePendingRequest(int CertificateId)
+        public async Task<IActionResult> DeletePendingRequest(int ApplicationId)
         {
 
-            var request = ModelFactory.CreateApprovedRequest(CertificateId, ApprovedRequestsTableName);
+            var request = ModelFactory.CreateDeleteRequest(ApplicationId, PendingRequestsTableName);
 
-            var response = await _context.GetApprovedRecord(request);
+            var response = await _context.DeleteDetails(request);
 
-            StatusCode((int)response.HttpStatusCode);
-
-            return ModelFactory.CreateResponse(response);
+            return StatusCode((int)response.HttpStatusCode);
         }
 
     }

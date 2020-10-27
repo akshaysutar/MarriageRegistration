@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace MarriageRegistration.WebApi.DataAccess
 {
-    public class DataContext
+    public class DataContext : IDataContext
     {
         private readonly IAmazonDynamoDB _amazonDynamoDb;
 

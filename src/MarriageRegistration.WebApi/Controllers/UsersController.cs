@@ -92,9 +92,9 @@ namespace MarriageRegistration.WebApi.Controllers
 
         // GET api/Users
         [HttpGet("{id}")]
-        public async Task <MarriageRegistrationResponseDomainModel> GetDetails(int id)
+        public async Task <MarriageRegistrationResponseDomainModel> GetDetails(int ApplicationId)
         {
-            var request = ModelFactory.CreateRequest(id, PendingRequestsTableName);
+            var request = ModelFactory.CreateRequest(ApplicationId, PendingRequestsTableName);
             
             var response = await _context.GetDetails(request);
 
