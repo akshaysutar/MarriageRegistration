@@ -80,6 +80,11 @@ namespace MarriageRegistration.WebApi.Factory
             return marriageRegistrationRequestEntity;
         }
 
+        public static String GenerateCertificateNumber()
+        {
+            return "RHK/2019/VOL-1/152";
+        }
+
         public static MarriageRegistrationResponseDomainModel CreateResponse(GetItemResponse response)
         {
             var marriageRegistrationResponseDomainModel = new MarriageRegistrationResponseDomainModel

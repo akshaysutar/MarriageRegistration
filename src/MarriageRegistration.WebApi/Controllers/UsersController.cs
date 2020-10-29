@@ -77,7 +77,7 @@ namespace MarriageRegistration.WebApi.Controllers
 
         // POST api/Users
         [HttpPost]
-        public async Task<MarriageRegistrationResponseDomainModel> StoreDetails([FromBody] MarriageDetailsInput marriageDetailsInput)
+        public async Task<MarriageRegistrationResponseDomainModel> SaveDetails([FromBody] MarriageDetailsInput marriageDetailsInput)
         {
             var marriageRegistrationRequestEntity = ModelFactory.GetRequestEntity(marriageDetailsInput);
 

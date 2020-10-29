@@ -28,3 +28,5 @@ D:\Dotnet\MarriageRegistration.WebApi\src\MarriageRegistration.WebApi\obj\Debug\
 D:\Dotnet\MarriageRegistration.WebApi\src\MarriageRegistration.WebApi\obj\Debug\netcoreapp3.1\MarriageRegistration.WebApi.dll
 D:\Dotnet\MarriageRegistration.WebApi\src\MarriageRegistration.WebApi\obj\Debug\netcoreapp3.1\MarriageRegistration.WebApi.pdb
 D:\Dotnet\MarriageRegistration.WebApi\src\MarriageRegistration.WebApi\obj\Debug\netcoreapp3.1\MarriageRegistration.WebApi.genruntimeconfig.cache
+D:\Dotnet\MarriageRegistration.WebApi\src\MarriageRegistration.WebApi\obj\Debug\netcoreapp3.1\MarriageRegistration.WebApi.RazorAssemblyInfo.cache
+D:\Dotnet\MarriageRegistration.WebApi\src\MarriageRegistration.WebApi\obj\Debug\netcoreapp3.1\MarriageRegistration.WebApi.RazorAssemblyInfo.cs

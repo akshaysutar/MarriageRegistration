@@ -10,8 +10,6 @@ namespace MarriageRegistration.WebApi.Models
         //Application Details
         public string ApplicationId { get; set; }
 
-        public string MarathiApplicationId { get; set; }
-
         public string ApplicantDistrict { get; set; }
 
         public string MarathiApplicantDistrict { get; set; }
