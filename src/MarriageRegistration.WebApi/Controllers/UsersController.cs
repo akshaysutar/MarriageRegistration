@@ -5,6 +5,7 @@ using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
 using MarriageRegistration.WebApi.DataAccess;
 using MarriageRegistration.WebApi.Factory;
+using MarriageRegistration.WebApi.Factory.IdGeneration;
 using MarriageRegistration.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -79,7 +80,9 @@ namespace MarriageRegistration.WebApi.Controllers
         [HttpPost]
         public async Task<MarriageRegistrationResponseDomainModel> SaveDetails([FromBody] MarriageDetailsInput marriageDetailsInput)
         {
-            var marriageRegistrationRequestEntity = ModelFactory.GetRequestEntity(marriageDetailsInput);
+            string ApplicationId = IdGenerator.GenerateApplicationId();
+
+            var marriageRegistrationRequestEntity = ModelFactory.GetRequestEntity(marriageDetailsInput, ApplicationId);
 
             var request = ModelFactory.CreateRequest(marriageRegistrationRequestEntity, PendingRequestsTableName);
 

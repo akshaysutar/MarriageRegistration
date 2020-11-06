@@ -7,6 +7,7 @@ using Amazon.DynamoDBv2.Model;
 using MarriageRegistration.WebApi.DataAccess;
 using MarriageRegistration.WebApi.Entities;
 using MarriageRegistration.WebApi.Factory;
+using MarriageRegistration.WebApi.Factory.IdGeneration;
 using MarriageRegistration.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -145,7 +146,7 @@ namespace MarriageRegistration.WebApi.Controllers
 
             ModelFactory.CreateResponse(response);
 
-            var CertificateNumber = ModelFactory.GenerateCertificateNumber();
+            var CertificateNumber = IdGenerator.GenerateCertificateNumber();
             
             var marriageRegistrationRequestEntity = ModelFactory.GetRequestEntity(marriageDetailsInput);
 

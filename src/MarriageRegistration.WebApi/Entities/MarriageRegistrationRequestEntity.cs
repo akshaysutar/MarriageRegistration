@@ -14,13 +14,11 @@ namespace MarriageRegistration.WebApi.Entities
 
         public string ApplicantDistrict { get; set; }
 
-        public string MarathiApplicantDistrict { get; set; }
-
         public string ApplicantTaluka { get; set; }
-        public string MarathiApplicantTaluka { get; set; }
+
 
         public string MarriageDate { get; set; }
-        public string MarathiMarriageDate { get; set; }
+
 
         public string MarriagePlace { get; set; }
         public string MarathiMarriagePlace { get; set; }
@@ -29,13 +27,13 @@ namespace MarriageRegistration.WebApi.Entities
         public string MarathiLawOfMarriage { get; set; }
 
         public string SubmissionDate { get; set; }
-        public string MarathiSubmissionDate { get; set; }
+
 
         public string DocumentsPresented { get; set; }
-        public string MarathiDocumentsPresented { get; set; }
+
 
         public bool IsMarriageRegisteredAlready { get; set; }
-        public string MarathiIsMarriageRegisteredAlready { get; set; }
+
 
         //Husband's Details
         public string HusbandFirstName { get; set; }
@@ -48,7 +46,7 @@ namespace MarriageRegistration.WebApi.Entities
         public string MarathiHusbandLastName { get; set; }
 
         public string UidOfHusband { get; set; }
-        public string MarathiUidOfHusband { get; set; }
+
 
         public string OtherNameOfHusband { get; set; }
         public string MarathiOtherNameOfHusband { get; set; }
@@ -56,14 +54,14 @@ namespace MarriageRegistration.WebApi.Entities
         public string ReligionByBirthOfHusband { get; set; }
         public string MarathiReligionByBirthOfHusband { get; set; }
 
-        public string AgeOfHusband { get; set; }
-        public string MarathiAgeOfHusband { get; set; }
+        public AgeEntity AgeOfHusband { get; set; }
+
 
         public string ReligionByAdoptionOfHusband { get; set; }
         public string MarathiReligionByAdoptionOfHusband { get; set; }
 
         public string StatusOfHusbandAtMarriage { get; set; }
-        public string MarathiStatusOfHusbandAtMarriage { get; set; }
+
 
         public string AddressOfHusband { get; set; }
         public string MarathiAddressOfHusband { get; set; }
@@ -79,10 +77,10 @@ namespace MarriageRegistration.WebApi.Entities
         public string MarathiWifeMiddleName { get; set; }
 
         public string WifeLastName { get; set; }
-        public string MarathiWifeLastNamet { get; set; }
+        public string MarathiWifeLastName { get; set; }
 
         public string UidOfWife { get; set; }
-        public string MarathiUidOfWife { get; set; }
+
 
         public string OtherNameOfWife { get; set; }
         public string MarathiOtherNameOfWife { get; set; }
@@ -93,11 +91,10 @@ namespace MarriageRegistration.WebApi.Entities
         public string ReligionByAdoptionOfWife { get; set; }
         public string MarathiReligionByAdoptionOfWife { get; set; }
 
-        public string AgeOfWife { get; set; }
-        public string MarathiAgeOfWife { get; set; }
+        public AgeEntity AgeOfWife { get; set; }
 
         public string StatusOfWifeAtMarriage { get; set; }
-        public string MarathiStatusOfWifeAtMarriage { get; set; }
+
 
         public string AddressOfWifeBeforeMarriage { get; set; }
         public string MarathiAddressOfWifeBeforeMarriage { get; set; }
@@ -107,7 +104,7 @@ namespace MarriageRegistration.WebApi.Entities
         public string MarathiNameofWitness1 { get; set; }
 
         public string UidOfWitness1 { get; set; }
-        public string MarathiUidOfWitness1 { get; set; }
+
 
         public string AddressOfWitness1 { get; set; }
         public string MarathiAddressOfWitness1 { get; set; }
@@ -122,7 +119,7 @@ namespace MarriageRegistration.WebApi.Entities
         public string MarathiNameofWitness2 { get; set; }
 
         public string UidOfWitness2 { get; set; }
-        public string MarathiUidOfWitness2 { get; set; }
+
 
         public string AddressOfWitness2 { get; set; }
         public string MarathiAddressOfWitness2 { get; set; }
@@ -137,7 +134,7 @@ namespace MarriageRegistration.WebApi.Entities
         public string MarathiNameOfWitness3 { get; set; }
 
         public string UidOfWitness3 { get; set; }
-        public string MarathiUidOfWitness3 { get; set; }
+
 
         public string AddressOfWitness3 { get; set; }
         public string MarathiAddressOfWitness3 { get; set; }
@@ -160,7 +157,5 @@ namespace MarriageRegistration.WebApi.Entities
         public string MarathiPriestReligion { get; set; }
 
         public string PriestAge { get; set; }
-        public string MarathiPriestAge { get; set; }
-
     }
 }

@@ -12,17 +12,19 @@ namespace MarriageRegistration.WebApi.Factory
     public class ModelFactory
     {
 
-        public static MarriageRegistrationRequestEntity GetRequestEntity(MarriageDetailsInput marriageDetailsInputDomainModel)
+        public static MarriageRegistrationRequestEntity GetRequestEntity(MarriageDetailsInput marriageDetailsInputDomainModel, string ApplicationId)
         {
             var marriageRegistrationRequestEntity = new MarriageRegistrationRequestEntity
             {
                 //Application Details
-                ApplicationId = marriageDetailsInputDomainModel.ApplicationId,
+                ApplicationId = ApplicationId,
                 ApplicantDistrict = marriageDetailsInputDomainModel.ApplicantDistrict,
                 ApplicantTaluka = marriageDetailsInputDomainModel.ApplicantTaluka,
                 MarriageDate = marriageDetailsInputDomainModel.MarriageDate,
                 MarriagePlace = marriageDetailsInputDomainModel.MarriagePlace,
+                MarathiMarriagePlace = marriageDetailsInputDomainModel.MarathiMarriagePlace,
                 LawOfMarriage = marriageDetailsInputDomainModel.LawOfMarriage,
+                MarathiLawOfMarriage = marriageDetailsInputDomainModel.MarathiLawOfMarriage,
                 DocumentsPresented = marriageDetailsInputDomainModel.DocumentsPresented,
                 IsMarriageRegisteredAlready = marriageDetailsInputDomainModel.IsMarriageRegisteredAlready,
                 SubmissionDate = marriageDetailsInputDomainModel.SubmissionDate,
@@ -31,26 +33,41 @@ namespace MarriageRegistration.WebApi.Factory
                 HusbandFirstName = marriageDetailsInputDomainModel.HusbandFirstName,
                 HusbandMiddleName = marriageDetailsInputDomainModel.HusbandMiddleName,
                 HusbandLastName = marriageDetailsInputDomainModel.HusbandLastName,
+                MarathiHusbandFirstName = marriageDetailsInputDomainModel.MarathiHusbandFirstName,
+                MarathiHusbandMiddleName = marriageDetailsInputDomainModel.MarathiHusbandMiddleName,
+                MarathiHusbandLastName = marriageDetailsInputDomainModel.MarathiHusbandLastName,
                 UidOfHusband = marriageDetailsInputDomainModel.UidOfHusband,
                 OtherNameOfHusband = marriageDetailsInputDomainModel.OtherNameOfHusband,
+                MarathiOtherNameOfHusband = marriageDetailsInputDomainModel.MarathiOtherNameOfHusband,
                 ReligionByBirthOfHusband = marriageDetailsInputDomainModel.ReligionByBirthOfHusband,
+                MarathiReligionByBirthOfHusband = marriageDetailsInputDomainModel.MarathiReligionByBirthOfHusband,
                 ReligionByAdoptionOfHusband = marriageDetailsInputDomainModel.ReligionByAdoptionOfHusband,
-                AgeOfHusband = marriageDetailsInputDomainModel.AgeOfHusband,
+                MarathiReligionByAdoptionOfHusband = marriageDetailsInputDomainModel.MarathiReligionByAdoptionOfHusband,
+                AgeOfHusband = GetAge(marriageDetailsInputDomainModel.AgeOfHusband),
                 OccupationOfHusbandWithAddress = marriageDetailsInputDomainModel.OccupationOfHusbandWithAddress,
+                MarathiOccupationOfHusbandWithAddress = marriageDetailsInputDomainModel.MarathiOccupationOfHusbandWithAddress,
                 StatusOfHusbandAtMarriage = marriageDetailsInputDomainModel.StatusOfHusbandAtMarriage,
                 AddressOfHusband = marriageDetailsInputDomainModel.AddressOfHusband,
+                MarathiAddressOfHusband = marriageDetailsInputDomainModel.MarathiAddressOfHusband,
 
                 //Wife's Details
                 WifeFirstName = marriageDetailsInputDomainModel.WifeFirstName,
                 WifeMiddleName = marriageDetailsInputDomainModel.WifeMiddleName,
                 WifeLastName = marriageDetailsInputDomainModel.WifeLastName,
+                MarathiWifeFirstName = marriageDetailsInputDomainModel.MarathiWifeFirstName,
+                MarathiWifeMiddleName = marriageDetailsInputDomainModel.MarathiWifeMiddleName,
+                MarathiWifeLastName = marriageDetailsInputDomainModel.MarathiWifeLastName,
                 UidOfWife = marriageDetailsInputDomainModel.UidOfWife,
                 OtherNameOfWife = marriageDetailsInputDomainModel.OtherNameOfWife,
+                MarathiOtherNameOfWife = marriageDetailsInputDomainModel.MarathiOtherNameOfWife,
                 ReligionByBirthOfWife = marriageDetailsInputDomainModel.ReligionByBirthOfWife,
                 ReligionByAdoptionOfWife = marriageDetailsInputDomainModel.ReligionByAdoptionOfWife,
-                AgeOfWife = marriageDetailsInputDomainModel.AgeOfWife,
+                MarathiReligionByBirthOfWife = marriageDetailsInputDomainModel.MarathiReligionByBirthOfWife,
+                MarathiReligionByAdoptionOfWife = marriageDetailsInputDomainModel.MarathiReligionByAdoptionOfWife,
+                AgeOfWife = GetAge(marriageDetailsInputDomainModel.AgeOfWife),
                 StatusOfWifeAtMarriage = marriageDetailsInputDomainModel.StatusOfWifeAtMarriage,
                 AddressOfWifeBeforeMarriage = marriageDetailsInputDomainModel.AddressOfWifeBeforeMarriage,
+                MarathiAddressOfWifeBeforeMarriage = marriageDetailsInputDomainModel.MarathiAddressOfWifeBeforeMarriage,
 
                 //Witness Details
                 NameofWitness1 = marriageDetailsInputDomainModel.NameofWitness1,
@@ -69,20 +86,41 @@ namespace MarriageRegistration.WebApi.Factory
                 OccupationOfWitness3WithAddress = marriageDetailsInputDomainModel.OccupationOfWitness3WithAddress,
                 RelationWithCoupleOfWitness3 = marriageDetailsInputDomainModel.RelationWithCoupleOfWitness3,
 
+                MarathiNameofWitness1 = marriageDetailsInputDomainModel.MarathiNameofWitness1,
+                MarathiAddressOfWitness1 = marriageDetailsInputDomainModel.MarathiAddressOfWitness1,
+                MarathiOccupationOfWitness1WithAddress = marriageDetailsInputDomainModel.MarathiOccupationOfWitness1WithAddress,
+                MarathiRelationWithCoupleOfWitness1 = marriageDetailsInputDomainModel.MarathiRelationWithCoupleOfWitness1,
+                MarathiNameofWitness2 = marriageDetailsInputDomainModel.MarathiNameofWitness2,
+                MarathiAddressOfWitness2 = marriageDetailsInputDomainModel.MarathiAddressOfWitness2,
+                MarathiOccupationOfWitness2WithAddress = marriageDetailsInputDomainModel.MarathiOccupationOfWitness2WithAddress,
+                MarathiRelationWithCoupleOfWitness2 = marriageDetailsInputDomainModel.MarathiRelationWithCoupleOfWitness2,
+                MarathiNameOfWitness3 = marriageDetailsInputDomainModel.MarathiNameOfWitness3,
+                MarathiAddressOfWitness3 = marriageDetailsInputDomainModel.MarathiAddressOfWitness3,
+                MarathiOccupationOfWitness3WithAddress = marriageDetailsInputDomainModel.MarathiOccupationOfWitness3WithAddress,
+                MarathiRelationWithCoupleOfWitness3 = marriageDetailsInputDomainModel.MarathiRelationWithCoupleOfWitness3,
+
                 //Priest Details
                 PriestName = marriageDetailsInputDomainModel.PriestName,
                 PriestAddress = marriageDetailsInputDomainModel.PriestAddress,
                 PriestReligion = marriageDetailsInputDomainModel.PriestReligion,
                 PriestAge = marriageDetailsInputDomainModel.PriestAge,
+                MarathiPriestName = marriageDetailsInputDomainModel.MarathiPriestName,
+                MarathiPriestAddress = marriageDetailsInputDomainModel.MarathiPriestAddress,
+                MarathiPriestReligion = marriageDetailsInputDomainModel.MarathiPriestReligion,
 
             };
 
             return marriageRegistrationRequestEntity;
         }
 
-        public static String GenerateCertificateNumber()
+        private static AgeEntity GetAge(Age age)
         {
-            return "RHK/2019/VOL-1/152";
+            var ageEntity = new AgeEntity
+            {
+                Years = age.Years,
+                Months = age.Months
+            };
+            return ageEntity;
         }
 
         public static MarriageRegistrationResponseDomainModel CreateResponse(GetItemResponse response)
