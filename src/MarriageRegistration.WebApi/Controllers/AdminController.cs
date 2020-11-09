@@ -84,11 +84,9 @@ namespace MarriageRegistration.WebApi.Controllers
         [Route("pendingrecords")]
         public async Task<List<MarriageRegistrationResponseEntity>> GetPendingRequests()
         {
-            var request = ModelFactory.CreateScanRequest(PendingRequestsTableName);
+            var request = ModelFactory.CreateScanItemRequest(PendingRequestsTableName);
 
             var response = await _context.GetPendingRecords(request);
-
-            StatusCode((int)response.HttpStatusCode);
 
             return ModelFactory.CreateScanResponse(response);
         }
@@ -96,30 +94,26 @@ namespace MarriageRegistration.WebApi.Controllers
         // GET api/Admin/pendingrecords/{id}
         [HttpGet]
         [Route("pendingrecords/{id}")]
-        public async Task<MarriageRegistrationResponseDomainModel> GetPendingRequest(int ApplicationId)
+        public async Task<MarriageRegistrationResponseDomainModel> GetPendingRequestDetails(int ApplicationId)
         {
-            var request = ModelFactory.CreateRequest(ApplicationId, PendingRequestsTableName);
+            var request = ModelFactory.CreateScanItemRequest(ApplicationId, PendingRequestsTableName);
 
-            var response = await _context.GetDetails(request);
+            var response = await _context.GetItemDetails(request);
 
-            StatusCode((int)response.HttpStatusCode);
-
-            return ModelFactory.CreateResponse(response);
+            return ModelFactory.CreateScanResponse(response);
         }
 
         // GET api/Admin/approvedrecords
         [HttpGet]
         [Route("approvedrecords/{id}")]
-        public async Task<MarriageRegistrationResponseDomainModel> GetApprovedRequests(int CertificateId)
+        public async Task<MarriageRegistrationResponseDomainModel> GetApprovedRequestDetails(int CertificateId)
         {
             
             var request = ModelFactory.CreateApprovedRequest(CertificateId, ApprovedRequestsTableName);
 
-            var response = await _context.GetApprovedRecord(request);
+            var response = await _context.GetItemDetails(request);
 
-            StatusCode((int)response.HttpStatusCode);
-
-            return ModelFactory.CreateApprovedResponse(response);
+            return ModelFactory.CreateScanResponse(response);
         }
 
         // DELETE api/Admin/reject/{id}
@@ -138,32 +132,25 @@ namespace MarriageRegistration.WebApi.Controllers
         // DELETE api/Admin/approve
         [HttpPost]
         [Route("approve/{id}")]
-        public async Task<MarriageRegistrationResponseDomainModel> ApproveRequest(int ApplicationId)
+        public async Task<string> ApproveRequest(int ApplicationId)
         {
-            var request = ModelFactory.CreateRequest(ApplicationId, PendingRequestsTableName);
+            var request = ModelFactory.CreateScanItemRequest(ApplicationId, PendingRequestsTableName);
 
-            var response = await _context.GetDetails(request);
+            var response = await _context.GetItemDetails(request);
 
-            ModelFactory.CreateResponse(response);
+            var recordToApprove = ModelFactory.CreateScanResponse(response);
 
             var CertificateNumber = IdGenerator.GenerateCertificateNumber();
             
-            var marriageRegistrationRequestEntity = ModelFactory.GetRequestEntity(marriageDetailsInput);
+            var marriageRegistrationRequestEntity = ModelFactory.GetApproveRequestEntity(CertificateNumber, recordToApprove.marriageRegistrationResponseEntity);
 
-            var request = ModelFactory.CreateRequest(marriageRegistrationRequestEntity, PendingRequestsTableName);
+            var requestToApprove = ModelFactory.CreatePutItemRequest(ApprovedRequestsTableName,marriageRegistrationRequestEntity);
 
-            var response = await _context.SaveDetails(request, marriageRegistrationRequestEntity);
+            var requestOfApprove = await _context.SaveDetails(requestToApprove, marriageRegistrationRequestEntity);
 
-            StatusCode((int)response.HttpStatusCode);
+            //return ModelFactory.CreateResponse(requestOfApprove, marriageRegistrationRequestEntity);
 
-            return ModelFactory.CreateResponse(response, marriageRegistrationRequestEntity);
-
-            var request = ModelFactory.CreateApprovedRequest(ApplicationId, ApprovedRequestsTableName);
-
-            var response = await _context.GetApprovedRecord(request);
-
-
-            return ModelFactory.CreateApprovedResponse(response);
+            return CertificateNumber;
         }
 
     }

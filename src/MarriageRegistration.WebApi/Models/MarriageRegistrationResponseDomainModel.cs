@@ -10,8 +10,6 @@ namespace MarriageRegistration.WebApi.Models
     public class MarriageRegistrationResponseDomainModel
     {
 
-        public HttpStatusCode httpStatusCode { get; set; }
-
         public MarriageRegistrationResponseEntity marriageRegistrationResponseEntity { get; set; }
     }
 }

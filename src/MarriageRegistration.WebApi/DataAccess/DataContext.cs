@@ -27,12 +27,12 @@ namespace MarriageRegistration.WebApi.DataAccess
             return response;
         }
 
-        public async Task<GetItemResponse> GetDetails(GetItemRequest request)
+        public async Task<GetItemResponse> GetItemDetails(GetItemRequest request)
         {
             var response = await _amazonDynamoDb.GetItemAsync(request);
 
             return response;
-
+            
         }
 
         public async Task<DeleteItemResponse> DeleteDetails(DeleteItemRequest request)
@@ -51,12 +51,5 @@ namespace MarriageRegistration.WebApi.DataAccess
 
         }
 
-        public async Task<GetItemResponse> GetApprovedRecord(GetItemRequest request)
-        {
-            var response = await _amazonDynamoDb.GetItemAsync(request);
-
-            return response;
-
-        }
     }
 }

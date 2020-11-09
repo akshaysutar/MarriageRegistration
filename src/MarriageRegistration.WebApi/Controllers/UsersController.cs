@@ -82,14 +82,12 @@ namespace MarriageRegistration.WebApi.Controllers
         {
             string ApplicationId = IdGenerator.GenerateApplicationId();
 
-            var marriageRegistrationRequestEntity = ModelFactory.GetRequestEntity(marriageDetailsInput, ApplicationId);
+            var marriageRegistrationRequestEntity = ModelFactory.GetPutItemRequestEntity(marriageDetailsInput, ApplicationId);
 
-            var request = ModelFactory.CreateRequest(marriageRegistrationRequestEntity, PendingRequestsTableName);
+            var request = ModelFactory.CreatePutItemRequest(marriageRegistrationRequestEntity, PendingRequestsTableName);
 
             var response = await _context.SaveDetails(request, marriageRegistrationRequestEntity);
-           
-            StatusCode((int)response.HttpStatusCode);
-
+                     
             return ModelFactory.CreateResponse(response, marriageRegistrationRequestEntity);
         }
 
@@ -97,13 +95,13 @@ namespace MarriageRegistration.WebApi.Controllers
         [HttpGet("{id}")]
         public async Task <MarriageRegistrationResponseDomainModel> GetDetails(int ApplicationId)
         {
-            var request = ModelFactory.CreateRequest(ApplicationId, PendingRequestsTableName);
+            var request = ModelFactory.CreateScanItemRequest(ApplicationId, PendingRequestsTableName);
             
-            var response = await _context.GetDetails(request);
+            var response = await _context.GetItemDetails(request);
 
             StatusCode((int)response.HttpStatusCode);
 
-            return ModelFactory.CreateResponse(response);
+            return ModelFactory.CreateScanResponse(response);
 
         }
 

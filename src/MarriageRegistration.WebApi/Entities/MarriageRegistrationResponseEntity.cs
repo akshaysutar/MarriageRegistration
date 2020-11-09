@@ -78,7 +78,7 @@ namespace MarriageRegistration.WebApi.Entities
         public string MarathiWifeMiddleName { get; set; }
 
         public string WifeLastName { get; set; }
-        public string MarathiWifeLastNamet { get; set; }
+        public string MarathiWifeLastName { get; set; }
 
         public string UidOfWife { get; set; }
 

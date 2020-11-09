@@ -12,7 +12,7 @@ namespace MarriageRegistration.WebApi.Factory
     public class ModelFactory
     {
 
-        public static MarriageRegistrationRequestEntity GetRequestEntity(MarriageDetailsInput marriageDetailsInputDomainModel, string ApplicationId)
+        public static MarriageRegistrationRequestEntity GetPutItemRequestEntity(MarriageDetailsInput marriageDetailsInputDomainModel, string ApplicationId)
         {
             var marriageRegistrationRequestEntity = new MarriageRegistrationRequestEntity
             {
@@ -113,6 +113,105 @@ namespace MarriageRegistration.WebApi.Factory
             return marriageRegistrationRequestEntity;
         }
 
+        public static PutItemRequest CreatePutItemRequest(string approvedRequestsTableName, MarriageRegistrationRequestEntity marriageRegistrationRequestEntity)
+        {
+            var request = new PutItemRequest
+            {
+                TableName = approvedRequestsTableName,
+                Item = new Dictionary<string, AttributeValue>
+                {
+                    { "ApplicationId", new AttributeValue { N = marriageRegistrationRequestEntity.ApplicationId.ToString() }},
+                    { "applicantDistrict", new AttributeValue { S = marriageRegistrationRequestEntity.ApplicantDistrict }},
+                    { "applicantTaluka", new AttributeValue { S = marriageRegistrationRequestEntity.ApplicantTaluka }},
+                    { "MarriageDate", new AttributeValue { S = marriageRegistrationRequestEntity.MarriageDate.ToString() }},
+                    { "marriagePlace", new AttributeValue { S = marriageRegistrationRequestEntity.MarriagePlace }},
+                    { "marathimarriagePlace", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiMarriagePlace }},
+                    { "lawOfMarriage", new AttributeValue { S = marriageRegistrationRequestEntity.LawOfMarriage }},
+                    { "marathilawOfMarriage", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiLawOfMarriage }},
+                    { "documents_presented", new AttributeValue { S = marriageRegistrationRequestEntity.DocumentsPresented }},
+                    { "isMarriageRegisterAlready", new AttributeValue { BOOL = marriageRegistrationRequestEntity.IsMarriageRegisteredAlready }},
+                    { "submissionDate", new AttributeValue { S = marriageRegistrationRequestEntity.SubmissionDate.ToString() }},
+
+                    { "husbandFirstName", new AttributeValue { S = marriageRegistrationRequestEntity.HusbandFirstName }},
+                    { "husbandMiddleName", new AttributeValue { S = marriageRegistrationRequestEntity.HusbandMiddleName }},
+                    { "husbandLastName", new AttributeValue { S = marriageRegistrationRequestEntity.HusbandLastName }},
+                    { "marathihusbandFirstName", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiHusbandFirstName }},
+                    { "marathihusbandMiddleName", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiHusbandMiddleName } },
+                    { "marathihusbandLastName", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiHusbandLastName } },
+                    { "uidOfHusband", new AttributeValue { S = marriageRegistrationRequestEntity.UidOfHusband }},
+                    { "otherNameOfHusband", new AttributeValue { S = marriageRegistrationRequestEntity.OtherNameOfHusband }},
+                    { "marathiotherNameOfHusband", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiOtherNameOfHusband }},
+                    { "religionByBirthOfHusband", new AttributeValue { S = marriageRegistrationRequestEntity.ReligionByBirthOfHusband }},
+                    { "religionByAdoptionOfHusband", new AttributeValue { S = marriageRegistrationRequestEntity.ReligionByAdoptionOfHusband }},
+                    { "marathireligionByBirthOfHusband", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiReligionByBirthOfHusband }},
+                    { "marathireligionByAdoptionOfHusband", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiReligionByAdoptionOfHusband }},
+                    { "ageOfHusband", new AttributeValue { S = marriageRegistrationRequestEntity.AgeOfHusband.Years + marriageRegistrationRequestEntity.AgeOfHusband.Months }},
+                    { "occupationOfHusbandWithAddress", new AttributeValue { S = marriageRegistrationRequestEntity.OccupationOfHusbandWithAddress }},
+                     { "occupationOfHusbandWithAddress", new AttributeValue { S = marriageRegistrationRequestEntity.OccupationOfHusbandWithAddress }},
+                    { "statusOfHusbandAtMarriage", new AttributeValue { S = marriageRegistrationRequestEntity.StatusOfHusbandAtMarriage }},
+                    { "addressOfHusband", new AttributeValue { S = marriageRegistrationRequestEntity.AddressOfHusband }},
+                    { "marathiaddressOfHusband", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiAddressOfHusband }},
+
+                    { "wifeFirstName", new AttributeValue { S = marriageRegistrationRequestEntity.WifeFirstName }},
+                    { "wifeMiddleName", new AttributeValue { S = marriageRegistrationRequestEntity.WifeMiddleName }},
+                    { "wifeLastName", new AttributeValue { S = marriageRegistrationRequestEntity.WifeLastName }},
+                    { "marathiwifeFirstName", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiWifeFirstName }},
+                    { "marathiwifeMiddleName", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiWifeMiddleName }},
+                    { "marathiwifeLastName", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiWifeLastName }},
+                    { "uidOfWife", new AttributeValue { S = marriageRegistrationRequestEntity.UidOfWife }},
+                    { "otherNameOfWife", new AttributeValue { S = marriageRegistrationRequestEntity.OtherNameOfWife }},
+                    { "marathiotherNameOfWife", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiOtherNameOfWife }},
+                    { "religionByBirthOfWife", new AttributeValue { S = marriageRegistrationRequestEntity.ReligionByBirthOfWife }},
+                    { "religionByAdoptionOfWife", new AttributeValue { S = marriageRegistrationRequestEntity.ReligionByAdoptionOfWife }},
+                    { "marathireligionByBirthOfWife", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiReligionByBirthOfWife }},
+                    { "marathireligionByAdoptionOfWife", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiReligionByAdoptionOfWife }},
+                    { "ageOfWife", new AttributeValue { S = marriageRegistrationRequestEntity.AgeOfWife.Years  +  marriageRegistrationRequestEntity.AgeOfWife.Months}},
+                    { "statusOfWifeAtMarriage", new AttributeValue { S = marriageRegistrationRequestEntity.StatusOfWifeAtMarriage }},
+                    { "addressOfWifeBeforeMarriage", new AttributeValue { S = marriageRegistrationRequestEntity.AddressOfWifeBeforeMarriage }},
+                    { "marathiaddressOfWifeBeforeMarriage", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiAddressOfWifeBeforeMarriage }},
+
+                    { "nameOfWitness1", new AttributeValue { S = marriageRegistrationRequestEntity.NameofWitness1 }},
+                    { "uidOfWitness1", new AttributeValue { S = marriageRegistrationRequestEntity.UidOfWitness1 }},
+                    { "addressOfWitness1", new AttributeValue { S = marriageRegistrationRequestEntity.AddressOfWitness1 }},
+                    { "occupationOfWitness1WithAddress", new AttributeValue { S = marriageRegistrationRequestEntity.OccupationOfWitness1WithAddress }},
+                    { "relationWithCoupleOfWitness1", new AttributeValue { S = marriageRegistrationRequestEntity.RelationWithCoupleOfWitness1 }},
+                    { "marathinameOfWitness1", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiNameofWitness1 }},
+                    { "marathiaddressOfWitness1", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiAddressOfWitness1 }},
+                    { "marathioccupationOfWitness1WithAddress", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiOccupationOfWitness1WithAddress }},
+                    { "marathirelationWithCoupleOfWitness1", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiRelationWithCoupleOfWitness1 }},
+                    { "nameOfWitness2", new AttributeValue { S = marriageRegistrationRequestEntity.NameofWitness2 }},
+                    { "uidOfWitness2", new AttributeValue { S = marriageRegistrationRequestEntity.UidOfWitness2 }},
+                    { "addressOfWitness2", new AttributeValue { S = marriageRegistrationRequestEntity.AddressOfWitness2 }},
+                    { "occupationOfWitness2WithAddress", new AttributeValue { S = marriageRegistrationRequestEntity.OccupationOfWitness2WithAddress }},
+                    { "relationWithCoupleOfWitness2", new AttributeValue { S =marriageRegistrationRequestEntity.RelationWithCoupleOfWitness2 }},
+                    { "marathinameOfWitness1", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiNameofWitness2 }},
+                    { "marathiaddressOfWitness1", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiAddressOfWitness2 }},
+                    { "marathioccupationOfWitness1WithAddress", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiOccupationOfWitness2WithAddress }},
+                    { "marathirelationWithCoupleOfWitness1", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiRelationWithCoupleOfWitness2 }},
+                    { "nameOfWitness3", new AttributeValue { S = marriageRegistrationRequestEntity.NameOfWitness3 }},
+                    { "uidOfWitness3", new AttributeValue { S = marriageRegistrationRequestEntity.UidOfWitness3 }},
+                    { "addressOfWitness3", new AttributeValue { S = marriageRegistrationRequestEntity.AddressOfWitness3 }},
+                    { "occupationOfWitness3WithAddress", new AttributeValue { S = marriageRegistrationRequestEntity.OccupationOfWitness3WithAddress }},
+                    { "relationWithCoupleOfWitness3", new AttributeValue { S = marriageRegistrationRequestEntity.RelationWithCoupleOfWitness3 }},
+                    { "marathinameOfWitness3", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiAddressOfWitness3 }},
+                    { "marathiaddressOfWitness3", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiAddressOfWitness3 }},
+                    { "marathioccupationOfWitness3WithAddress", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiOccupationOfWitness3WithAddress }},
+                    { "marathirelationWithCoupleOfWitness3", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiRelationWithCoupleOfWitness3 }},
+
+                    { "priestName", new AttributeValue { S = marriageRegistrationRequestEntity.PriestName }},
+                    { "priestAddress", new AttributeValue { S = marriageRegistrationRequestEntity.PriestAddress }},
+                    { "priestReligion", new AttributeValue { S = marriageRegistrationRequestEntity.PriestReligion }},
+                    { "marathipriestName", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiPriestName }},
+                    { "marathipriestAddress", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiPriestAddress }},
+                    { "marathipriestReligion", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiPriestReligion }},
+                    { "priestAge", new AttributeValue { S = marriageRegistrationRequestEntity.PriestAge }},
+
+                }
+            };
+
+            return request;
+        }
+
         private static AgeEntity GetAge(Age age)
         {
             var ageEntity = new AgeEntity
@@ -123,11 +222,11 @@ namespace MarriageRegistration.WebApi.Factory
             return ageEntity;
         }
 
-        public static MarriageRegistrationResponseDomainModel CreateResponse(GetItemResponse response)
+        public static MarriageRegistrationResponseDomainModel CreateScanResponse(GetItemResponse response)
         {
             var marriageRegistrationResponseDomainModel = new MarriageRegistrationResponseDomainModel
             {
-                httpStatusCode = response.HttpStatusCode,
+               
                 marriageRegistrationResponseEntity = CreateMarriageRegistrationResponseEntity(response),
             };
 
@@ -138,12 +237,16 @@ namespace MarriageRegistration.WebApi.Factory
         {
             var marriageRegistrationResponseEntity = new MarriageRegistrationResponseEntity
             {
+                //Application Details
                 ApplicationId = response.Item["ApplicationId"].N,
+                CertificateNumber = response.Item["CertificateId"].S,
                 ApplicantDistrict = response.Item["applicantDistrict"].S,
                 ApplicantTaluka = response.Item["applicantTaluka"].S,
                 MarriageDate = response.Item["MarriageDate"].S,
                 MarriagePlace = response.Item["marriagePlace"].S,
                 LawOfMarriage = response.Item["lawOfMarriage"].S,
+                MarathiMarriagePlace = response.Item["marathimarriagePlace"].S,
+                MarathiLawOfMarriage = response.Item["marathilawOfMarriage"].S,
                 DocumentsPresented = response.Item["documents_presented"].S,
                 IsMarriageRegisteredAlready = response.Item["isMarriageRegisterAlready"].BOOL,
                 SubmissionDate = response.Item["submissionDate"].S,
@@ -152,26 +255,41 @@ namespace MarriageRegistration.WebApi.Factory
                 HusbandFirstName = response.Item["husbandFirstName"].S,
                 HusbandMiddleName = response.Item["husbandMiddleName"].S,
                 HusbandLastName = response.Item["husbandLastName"].S,
+                MarathiHusbandFirstName = response.Item["marathihusbandFirstName"].S,
+                MarathiHusbandMiddleName = response.Item["marathihusbandMiddleName"].S,
+                MarathiHusbandLastName = response.Item["marathihusbandLastName"].S,
                 UidOfHusband = response.Item["uidOfHusband"].S,
                 OtherNameOfHusband = response.Item["otherNameOfHusband"].S,
                 ReligionByBirthOfHusband = response.Item["religionByBirthOfHusband"].S,
                 ReligionByAdoptionOfHusband = response.Item["religionByAdoptionOfHusband"].S,
+                MarathiOtherNameOfHusband = response.Item["marathiotherNameOfHusband"].S,
+                MarathiReligionByBirthOfHusband = response.Item["marathireligionByBirthOfHusband"].S,
+                MarathiReligionByAdoptionOfHusband = response.Item["marathireligionByAdoptionOfHusband"].S,
                 AgeOfHusband = response.Item["ageOfHusband"].S,
                 OccupationOfHusbandWithAddress = response.Item["occupationOfHusbandWithAddress"].S,
+                MarathiOccupationOfHusbandWithAddress = response.Item["marathioccupationOfHusbandWithAddress"].S,
                 StatusOfHusbandAtMarriage = response.Item["statusOfHusbandAtMarriage"].S,
                 AddressOfHusband = response.Item["addressOfHusband"].S,
+                MarathiAddressOfHusband = response.Item["marathiaddressOfHusband"].S,
 
                 //Wife's Details
                 WifeFirstName = response.Item["wifeFirstName"].S,
                 WifeMiddleName = response.Item["wifeMiddleName"].S,
                 WifeLastName = response.Item["wifeLastName"].S,
+                MarathiWifeFirstName = response.Item["marathiwifeFirstName"].S,
+                MarathiWifeMiddleName = response.Item["marathiwifeMiddleName"].S,
+                MarathiWifeLastName = response.Item["marathiwifeLastName"].S,
                 UidOfWife = response.Item["uidOfWife"].S,
                 OtherNameOfWife = response.Item["otherNameOfWife"].S,
                 ReligionByBirthOfWife = response.Item["religionByBirthOfWife"].S,
                 ReligionByAdoptionOfWife = response.Item["religionByAdoptionOfWife"].S,
+                MarathiOtherNameOfWife = response.Item["marathiotherNameOfWife"].S,
+                MarathiReligionByBirthOfWife = response.Item["marathireligionByBirthOfWife"].S,
+                MarathiReligionByAdoptionOfWife = response.Item["marathireligionByAdoptionOfWife"].S,
                 AgeOfWife = response.Item["ageOfWife"].S,
                 StatusOfWifeAtMarriage = response.Item["statusOfWifeAtMarriage"].S,
                 AddressOfWifeBeforeMarriage = response.Item["addressOfWifeBeforeMarriage"].S,
+                MarathiAddressOfWifeBeforeMarriage = response.Item["marathiaddressOfWifeBeforeMarriage"].S,
 
                 //Witness Details
                 NameofWitness1 = response.Item["nameOfWitness1"].S,
@@ -190,18 +308,37 @@ namespace MarriageRegistration.WebApi.Factory
                 OccupationOfWitness3WithAddress = response.Item["occupationOfWitness3WithAddress"].S,
                 RelationWithCoupleOfWitness3 = response.Item["relationWithCoupleOfWitness3"].S,
 
+                MarathiNameofWitness1 = response.Item["marathinameOfWitness1"].S,
+
+                MarathiAddressOfWitness1 = response.Item["marathiaddressOfWitness1"].S,
+                MarathiOccupationOfWitness1WithAddress = response.Item["marathioccupationOfWitness1WithAddress"].S,
+                MarathiRelationWithCoupleOfWitness1 = response.Item["marathirelationWithCoupleOfWitness1"].S,
+                MarathiNameofWitness2 = response.Item["marathinameOfWitness2"].S,
+
+                MarathiAddressOfWitness2 = response.Item["marathiaddressOfWitness2"].S,
+                MarathiOccupationOfWitness2WithAddress = response.Item["marathioccupationOfWitness2WithAddress"].S,
+                MarathiRelationWithCoupleOfWitness2 = response.Item["marathirelationWithCoupleOfWitness2"].S,
+                MarathiNameOfWitness3 = response.Item["marathinameOfWitness3"].S,
+
+                MarathiAddressOfWitness3 = response.Item["marathiaddressOfWitness3"].S,
+                MarathiOccupationOfWitness3WithAddress = response.Item["marathioccupationOfWitness3WithAddress"].S,
+                MarathiRelationWithCoupleOfWitness3 = response.Item["marathirelationWithCoupleOfWitness3"].S,
+
                 //Priest Details
                 PriestName = response.Item["priestName"].S,
                 PriestAddress = response.Item["priestAddress"].S,
                 PriestReligion = response.Item["priestReligion"].S,
                 PriestAge = response.Item["priestAge"].S,
+                MarathiPriestName = response.Item["marathipriestName"].S,
+                MarathiPriestAddress = response.Item["marathipriestAddress"].S,
+                MarathiPriestReligion = response.Item["marathipriestReligion"].S,
 
             };
 
             return marriageRegistrationResponseEntity;
         }
 
-        public static GetItemRequest CreateRequest(int id, string TableName)
+        public static GetItemRequest CreateScanItemRequest(int id, string TableName)
         {
             var request = new GetItemRequest
             {
@@ -223,7 +360,7 @@ namespace MarriageRegistration.WebApi.Factory
             return request;
         }
 
-        public static ScanRequest CreateScanRequest(string pendingRequestsTableName)
+        public static ScanRequest CreateScanItemRequest(string pendingRequestsTableName)
         {
             var request = new ScanRequest
             {
@@ -233,7 +370,7 @@ namespace MarriageRegistration.WebApi.Factory
             return request;
         }
 
-        public static PutItemRequest CreateRequest(MarriageRegistrationRequestEntity marriageRegistrationRequestEntity, string TableName)
+        public static PutItemRequest CreatePutItemRequest(MarriageRegistrationRequestEntity marriageRegistrationRequestEntity, string TableName)
         {
             var request = new PutItemRequest
             {
@@ -245,7 +382,9 @@ namespace MarriageRegistration.WebApi.Factory
                     { "applicantTaluka", new AttributeValue { S = marriageRegistrationRequestEntity.ApplicantTaluka }},
                     { "MarriageDate", new AttributeValue { S = marriageRegistrationRequestEntity.MarriageDate.ToString() }},
                     { "marriagePlace", new AttributeValue { S = marriageRegistrationRequestEntity.MarriagePlace }},
+                    { "marathimarriagePlace", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiMarriagePlace }},
                     { "lawOfMarriage", new AttributeValue { S = marriageRegistrationRequestEntity.LawOfMarriage }},
+                    { "marathilawOfMarriage", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiLawOfMarriage }},
                     { "documents_presented", new AttributeValue { S = marriageRegistrationRequestEntity.DocumentsPresented }},
                     { "isMarriageRegisterAlready", new AttributeValue { BOOL = marriageRegistrationRequestEntity.IsMarriageRegisteredAlready }},
                     { "submissionDate", new AttributeValue { S = marriageRegistrationRequestEntity.SubmissionDate.ToString() }},
@@ -253,45 +392,75 @@ namespace MarriageRegistration.WebApi.Factory
                     { "husbandFirstName", new AttributeValue { S = marriageRegistrationRequestEntity.HusbandFirstName }},
                     { "husbandMiddleName", new AttributeValue { S = marriageRegistrationRequestEntity.HusbandMiddleName }},
                     { "husbandLastName", new AttributeValue { S = marriageRegistrationRequestEntity.HusbandLastName }},
+                    { "marathihusbandFirstName", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiHusbandFirstName }},
+                    { "marathihusbandMiddleName", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiHusbandMiddleName } },
+                    { "marathihusbandLastName", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiHusbandLastName } },
                     { "uidOfHusband", new AttributeValue { S = marriageRegistrationRequestEntity.UidOfHusband }},
                     { "otherNameOfHusband", new AttributeValue { S = marriageRegistrationRequestEntity.OtherNameOfHusband }},
+                    { "marathiotherNameOfHusband", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiOtherNameOfHusband }},
                     { "religionByBirthOfHusband", new AttributeValue { S = marriageRegistrationRequestEntity.ReligionByBirthOfHusband }},
                     { "religionByAdoptionOfHusband", new AttributeValue { S = marriageRegistrationRequestEntity.ReligionByAdoptionOfHusband }},
-                    { "ageOfHusband", new AttributeValue { S = marriageRegistrationRequestEntity.AgeOfHusband }},
+                    { "marathireligionByBirthOfHusband", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiReligionByBirthOfHusband }},
+                    { "marathireligionByAdoptionOfHusband", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiReligionByAdoptionOfHusband }},
+                    { "ageOfHusband", new AttributeValue { S = marriageRegistrationRequestEntity.AgeOfHusband.Years + marriageRegistrationRequestEntity.AgeOfHusband.Months }},
                     { "occupationOfHusbandWithAddress", new AttributeValue { S = marriageRegistrationRequestEntity.OccupationOfHusbandWithAddress }},
+                     { "occupationOfHusbandWithAddress", new AttributeValue { S = marriageRegistrationRequestEntity.OccupationOfHusbandWithAddress }},
                     { "statusOfHusbandAtMarriage", new AttributeValue { S = marriageRegistrationRequestEntity.StatusOfHusbandAtMarriage }},
                     { "addressOfHusband", new AttributeValue { S = marriageRegistrationRequestEntity.AddressOfHusband }},
+                    { "marathiaddressOfHusband", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiAddressOfHusband }},
 
                     { "wifeFirstName", new AttributeValue { S = marriageRegistrationRequestEntity.WifeFirstName }},
                     { "wifeMiddleName", new AttributeValue { S = marriageRegistrationRequestEntity.WifeMiddleName }},
                     { "wifeLastName", new AttributeValue { S = marriageRegistrationRequestEntity.WifeLastName }},
+                    { "marathiwifeFirstName", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiWifeFirstName }},
+                    { "marathiwifeMiddleName", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiWifeMiddleName }},
+                    { "marathiwifeLastName", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiWifeLastName }},
                     { "uidOfWife", new AttributeValue { S = marriageRegistrationRequestEntity.UidOfWife }},
                     { "otherNameOfWife", new AttributeValue { S = marriageRegistrationRequestEntity.OtherNameOfWife }},
+                    { "marathiotherNameOfWife", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiOtherNameOfWife }},
                     { "religionByBirthOfWife", new AttributeValue { S = marriageRegistrationRequestEntity.ReligionByBirthOfWife }},
                     { "religionByAdoptionOfWife", new AttributeValue { S = marriageRegistrationRequestEntity.ReligionByAdoptionOfWife }},
-                    { "ageOfWife", new AttributeValue { S = marriageRegistrationRequestEntity.AgeOfWife }},
+                    { "marathireligionByBirthOfWife", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiReligionByBirthOfWife }},
+                    { "marathireligionByAdoptionOfWife", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiReligionByAdoptionOfWife }},
+                    { "ageOfWife", new AttributeValue { S = marriageRegistrationRequestEntity.AgeOfWife.Years  +  marriageRegistrationRequestEntity.AgeOfWife.Months}},
                     { "statusOfWifeAtMarriage", new AttributeValue { S = marriageRegistrationRequestEntity.StatusOfWifeAtMarriage }},
                     { "addressOfWifeBeforeMarriage", new AttributeValue { S = marriageRegistrationRequestEntity.AddressOfWifeBeforeMarriage }},
+                    { "marathiaddressOfWifeBeforeMarriage", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiAddressOfWifeBeforeMarriage }},
 
                     { "nameOfWitness1", new AttributeValue { S = marriageRegistrationRequestEntity.NameofWitness1 }},
                     { "uidOfWitness1", new AttributeValue { S = marriageRegistrationRequestEntity.UidOfWitness1 }},
                     { "addressOfWitness1", new AttributeValue { S = marriageRegistrationRequestEntity.AddressOfWitness1 }},
                     { "occupationOfWitness1WithAddress", new AttributeValue { S = marriageRegistrationRequestEntity.OccupationOfWitness1WithAddress }},
                     { "relationWithCoupleOfWitness1", new AttributeValue { S = marriageRegistrationRequestEntity.RelationWithCoupleOfWitness1 }},
+                    { "marathinameOfWitness1", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiNameofWitness1 }},                  
+                    { "marathiaddressOfWitness1", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiAddressOfWitness1 }},
+                    { "marathioccupationOfWitness1WithAddress", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiOccupationOfWitness1WithAddress }},
+                    { "marathirelationWithCoupleOfWitness1", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiRelationWithCoupleOfWitness1 }},
                     { "nameOfWitness2", new AttributeValue { S = marriageRegistrationRequestEntity.NameofWitness2 }},
                     { "uidOfWitness2", new AttributeValue { S = marriageRegistrationRequestEntity.UidOfWitness2 }},
                     { "addressOfWitness2", new AttributeValue { S = marriageRegistrationRequestEntity.AddressOfWitness2 }},
                     { "occupationOfWitness2WithAddress", new AttributeValue { S = marriageRegistrationRequestEntity.OccupationOfWitness2WithAddress }},
                     { "relationWithCoupleOfWitness2", new AttributeValue { S =marriageRegistrationRequestEntity.RelationWithCoupleOfWitness2 }},
+                    { "marathinameOfWitness1", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiNameofWitness2 }},
+                    { "marathiaddressOfWitness1", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiAddressOfWitness2 }},
+                    { "marathioccupationOfWitness1WithAddress", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiOccupationOfWitness2WithAddress }},
+                    { "marathirelationWithCoupleOfWitness1", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiRelationWithCoupleOfWitness2 }},
                     { "nameOfWitness3", new AttributeValue { S = marriageRegistrationRequestEntity.NameOfWitness3 }},
                     { "uidOfWitness3", new AttributeValue { S = marriageRegistrationRequestEntity.UidOfWitness3 }},
                     { "addressOfWitness3", new AttributeValue { S = marriageRegistrationRequestEntity.AddressOfWitness3 }},
                     { "occupationOfWitness3WithAddress", new AttributeValue { S = marriageRegistrationRequestEntity.OccupationOfWitness3WithAddress }},
                     { "relationWithCoupleOfWitness3", new AttributeValue { S = marriageRegistrationRequestEntity.RelationWithCoupleOfWitness3 }},
+                    { "marathinameOfWitness3", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiAddressOfWitness3 }},
+                    { "marathiaddressOfWitness3", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiAddressOfWitness3 }},
+                    { "marathioccupationOfWitness3WithAddress", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiOccupationOfWitness3WithAddress }},
+                    { "marathirelationWithCoupleOfWitness3", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiRelationWithCoupleOfWitness3 }},
 
                     { "priestName", new AttributeValue { S = marriageRegistrationRequestEntity.PriestName }},
                     { "priestAddress", new AttributeValue { S = marriageRegistrationRequestEntity.PriestAddress }},
                     { "priestReligion", new AttributeValue { S = marriageRegistrationRequestEntity.PriestReligion }},
+                    { "marathipriestName", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiPriestName }},
+                    { "marathipriestAddress", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiPriestAddress }},
+                    { "marathipriestReligion", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiPriestReligion }},
                     { "priestAge", new AttributeValue { S = marriageRegistrationRequestEntity.PriestAge }},
 
                 }
@@ -300,11 +469,11 @@ namespace MarriageRegistration.WebApi.Factory
             return request;
         }
 
+        
         public static MarriageRegistrationResponseDomainModel CreateResponse(PutItemResponse response, MarriageRegistrationRequestEntity marriageRegistrationRequestEntity)
         {
             var marriageRegistrationResponseDomainModel = new MarriageRegistrationResponseDomainModel
             {
-                httpStatusCode = response.HttpStatusCode,
                 marriageRegistrationResponseEntity = CreateMarriageRegistrationResponseEntity(marriageRegistrationRequestEntity),
             };
 
@@ -393,12 +562,15 @@ namespace MarriageRegistration.WebApi.Factory
         {
             var marriageRegistrationResponseEntity = new MarriageRegistrationResponseEntity()
             {
+                //Application Details
                 ApplicationId = Item["ApplicationId"].N,
                 ApplicantDistrict = Item["applicantDistrict"].S,
                 ApplicantTaluka = Item["applicantTaluka"].S,
                 MarriageDate = Item["MarriageDate"].S,
                 MarriagePlace = Item["marriagePlace"].S,
                 LawOfMarriage = Item["lawOfMarriage"].S,
+                MarathiMarriagePlace = Item["marathimarriagePlace"].S,
+                MarathiLawOfMarriage = Item["marathilawOfMarriage"].S,
                 DocumentsPresented = Item["documents_presented"].S,
                 IsMarriageRegisteredAlready = Item["isMarriageRegisterAlready"].BOOL,
                 SubmissionDate = Item["submissionDate"].S,
@@ -407,26 +579,41 @@ namespace MarriageRegistration.WebApi.Factory
                 HusbandFirstName = Item["husbandFirstName"].S,
                 HusbandMiddleName = Item["husbandMiddleName"].S,
                 HusbandLastName = Item["husbandLastName"].S,
+                MarathiHusbandFirstName = Item["marathihusbandFirstName"].S,
+                MarathiHusbandMiddleName = Item["marathihusbandMiddleName"].S,
+                MarathiHusbandLastName = Item["marathihusbandLastName"].S,
                 UidOfHusband = Item["uidOfHusband"].S,
                 OtherNameOfHusband = Item["otherNameOfHusband"].S,
                 ReligionByBirthOfHusband = Item["religionByBirthOfHusband"].S,
                 ReligionByAdoptionOfHusband = Item["religionByAdoptionOfHusband"].S,
+                MarathiOtherNameOfHusband = Item["marathiotherNameOfHusband"].S,
+                MarathiReligionByBirthOfHusband = Item["marathireligionByBirthOfHusband"].S,
+                MarathiReligionByAdoptionOfHusband = Item["marathireligionByAdoptionOfHusband"].S,
                 AgeOfHusband = Item["ageOfHusband"].S,
                 OccupationOfHusbandWithAddress = Item["occupationOfHusbandWithAddress"].S,
+                MarathiOccupationOfHusbandWithAddress = Item["marathioccupationOfHusbandWithAddress"].S,
                 StatusOfHusbandAtMarriage = Item["statusOfHusbandAtMarriage"].S,
                 AddressOfHusband = Item["addressOfHusband"].S,
+                MarathiAddressOfHusband = Item["marathiaddressOfHusband"].S,
 
                 //Wife's Details
                 WifeFirstName = Item["wifeFirstName"].S,
                 WifeMiddleName = Item["wifeMiddleName"].S,
                 WifeLastName = Item["wifeLastName"].S,
+                MarathiWifeFirstName = Item["marathiwifeFirstName"].S,
+                MarathiWifeMiddleName = Item["marathiwifeMiddleName"].S,
+                MarathiWifeLastName = Item["marathiwifeLastName"].S,
                 UidOfWife = Item["uidOfWife"].S,
                 OtherNameOfWife = Item["otherNameOfWife"].S,
                 ReligionByBirthOfWife = Item["religionByBirthOfWife"].S,
                 ReligionByAdoptionOfWife = Item["religionByAdoptionOfWife"].S,
+                MarathiOtherNameOfWife = Item["marathiotherNameOfWife"].S,
+                MarathiReligionByBirthOfWife = Item["marathireligionByBirthOfWife"].S,
+                MarathiReligionByAdoptionOfWife = Item["marathireligionByAdoptionOfWife"].S,
                 AgeOfWife = Item["ageOfWife"].S,
                 StatusOfWifeAtMarriage = Item["statusOfWifeAtMarriage"].S,
                 AddressOfWifeBeforeMarriage = Item["addressOfWifeBeforeMarriage"].S,
+                MarathiAddressOfWifeBeforeMarriage = Item["marathiaddressOfWifeBeforeMarriage"].S,
 
                 //Witness Details
                 NameofWitness1 = Item["nameOfWitness1"].S,
@@ -445,22 +632,41 @@ namespace MarriageRegistration.WebApi.Factory
                 OccupationOfWitness3WithAddress = Item["occupationOfWitness3WithAddress"].S,
                 RelationWithCoupleOfWitness3 = Item["relationWithCoupleOfWitness3"].S,
 
+                MarathiNameofWitness1 = Item["marathinameOfWitness1"].S,
+
+                MarathiAddressOfWitness1 = Item["marathiaddressOfWitness1"].S,
+                MarathiOccupationOfWitness1WithAddress = Item["marathioccupationOfWitness1WithAddress"].S,
+                MarathiRelationWithCoupleOfWitness1 = Item["marathirelationWithCoupleOfWitness1"].S,
+                MarathiNameofWitness2 = Item["marathinameOfWitness2"].S,
+
+                MarathiAddressOfWitness2 = Item["marathiaddressOfWitness2"].S,
+                MarathiOccupationOfWitness2WithAddress = Item["marathioccupationOfWitness2WithAddress"].S,
+                MarathiRelationWithCoupleOfWitness2 = Item["marathirelationWithCoupleOfWitness2"].S,
+                MarathiNameOfWitness3 = Item["marathinameOfWitness3"].S,
+
+                MarathiAddressOfWitness3 = Item["marathiaddressOfWitness3"].S,
+                MarathiOccupationOfWitness3WithAddress = Item["marathioccupationOfWitness3WithAddress"].S,
+                MarathiRelationWithCoupleOfWitness3 = Item["marathirelationWithCoupleOfWitness3"].S,
+
                 //Priest Details
                 PriestName = Item["priestName"].S,
                 PriestAddress = Item["priestAddress"].S,
                 PriestReligion = Item["priestReligion"].S,
                 PriestAge = Item["priestAge"].S,
+                MarathiPriestName = Item["marathipriestName"].S,
+                MarathiPriestAddress = Item["marathipriestAddress"].S,
+                MarathiPriestReligion = Item["marathipriestReligion"].S,
 
             };
 
             return marriageRegistrationResponseEntity;
         }
 
-        public static GetItemRequest CreateApprovedRequest(int id, string approvedRequestsTableName)
+        public static GetItemRequest CreateApprovedRequest(int id, string TableName)
         {
             var request = new GetItemRequest
             {
-                TableName = approvedRequestsTableName,
+                TableName = TableName,
                 Key = new Dictionary<string, AttributeValue> { { "CertificateNumber", new AttributeValue { N = id.ToString() } } }
             };
 
@@ -471,7 +677,7 @@ namespace MarriageRegistration.WebApi.Factory
         {
             var marriageRegistrationResponseDomainModel = new MarriageRegistrationResponseDomainModel
             {
-                httpStatusCode = response.HttpStatusCode,
+                
                 marriageRegistrationResponseEntity = CreateMarriageRegistrationResponseEntityModel(response),
             };
 
@@ -544,6 +750,107 @@ namespace MarriageRegistration.WebApi.Factory
             };
 
             return marriageRegistrationResponseEntity;
+        }
+
+        public static MarriageRegistrationRequestEntity GetApproveRequestEntity(string CertificateNumber , MarriageRegistrationResponseEntity marriageRegistrationResponseEntity)
+        {
+            var marriageRegistrationRequestEntity = new MarriageRegistrationRequestEntity
+            {
+                //Application Details
+                ApplicationId = marriageRegistrationResponseEntity.ApplicationId,
+                CertificateNumber = marriageRegistrationResponseEntity.CertificateNumber,
+                ApplicantDistrict = marriageRegistrationResponseEntity.ApplicantDistrict,
+                ApplicantTaluka = marriageRegistrationResponseEntity.ApplicantTaluka,
+                MarriageDate = marriageRegistrationResponseEntity.MarriageDate,
+                MarriagePlace = marriageRegistrationResponseEntity.MarriagePlace,
+                MarathiMarriagePlace = marriageRegistrationResponseEntity.MarathiMarriagePlace,
+                LawOfMarriage = marriageRegistrationResponseEntity.LawOfMarriage,
+                MarathiLawOfMarriage = marriageRegistrationResponseEntity.MarathiLawOfMarriage,
+                DocumentsPresented = marriageRegistrationResponseEntity.DocumentsPresented,
+                IsMarriageRegisteredAlready = marriageRegistrationResponseEntity.IsMarriageRegisteredAlready,
+                SubmissionDate = marriageRegistrationResponseEntity.SubmissionDate,
+
+                //Husbands's Details
+                HusbandFirstName = marriageRegistrationResponseEntity.HusbandFirstName,
+                HusbandMiddleName = marriageRegistrationResponseEntity.HusbandMiddleName,
+                HusbandLastName = marriageRegistrationResponseEntity.HusbandLastName,
+                MarathiHusbandFirstName = marriageRegistrationResponseEntity.MarathiHusbandFirstName,
+                MarathiHusbandMiddleName = marriageRegistrationResponseEntity.MarathiHusbandMiddleName,
+                MarathiHusbandLastName = marriageRegistrationResponseEntity.MarathiHusbandLastName,
+                UidOfHusband = marriageRegistrationResponseEntity.UidOfHusband,
+                OtherNameOfHusband = marriageRegistrationResponseEntity.OtherNameOfHusband,
+                MarathiOtherNameOfHusband = marriageRegistrationResponseEntity.MarathiOtherNameOfHusband,
+                ReligionByBirthOfHusband = marriageRegistrationResponseEntity.ReligionByBirthOfHusband,
+                MarathiReligionByBirthOfHusband = marriageRegistrationResponseEntity.MarathiReligionByBirthOfHusband,
+                ReligionByAdoptionOfHusband = marriageRegistrationResponseEntity.ReligionByAdoptionOfHusband,
+                MarathiReligionByAdoptionOfHusband = marriageRegistrationResponseEntity.MarathiReligionByAdoptionOfHusband,
+                AgeOfHusband = GetAge(marriageRegistrationResponseEntity.AgeOfHusband),
+                OccupationOfHusbandWithAddress = marriageRegistrationResponseEntity.OccupationOfHusbandWithAddress,
+                MarathiOccupationOfHusbandWithAddress = marriageRegistrationResponseEntity.MarathiOccupationOfHusbandWithAddress,
+                StatusOfHusbandAtMarriage = marriageRegistrationResponseEntity.StatusOfHusbandAtMarriage,
+                AddressOfHusband = marriageRegistrationResponseEntity.AddressOfHusband,
+                MarathiAddressOfHusband = marriageRegistrationResponseEntity.MarathiAddressOfHusband,
+
+                //Wife's Details
+                WifeFirstName = marriageRegistrationResponseEntity.WifeFirstName,
+                WifeMiddleName = marriageRegistrationResponseEntity.WifeMiddleName,
+                WifeLastName = marriageRegistrationResponseEntity.WifeLastName,
+                MarathiWifeFirstName = marriageRegistrationResponseEntity.MarathiWifeFirstName,
+                MarathiWifeMiddleName = marriageRegistrationResponseEntity.MarathiWifeMiddleName,
+                MarathiWifeLastName = marriageRegistrationResponseEntity.MarathiWifeLastName,
+                UidOfWife = marriageRegistrationResponseEntity.UidOfWife,
+                OtherNameOfWife = marriageRegistrationResponseEntity.OtherNameOfWife,
+                MarathiOtherNameOfWife = marriageRegistrationResponseEntity.MarathiOtherNameOfWife,
+                ReligionByBirthOfWife = marriageRegistrationResponseEntity.ReligionByBirthOfWife,
+                ReligionByAdoptionOfWife = marriageRegistrationResponseEntity.ReligionByAdoptionOfWife,
+                MarathiReligionByBirthOfWife = marriageRegistrationResponseEntity.MarathiReligionByBirthOfWife,
+                MarathiReligionByAdoptionOfWife = marriageRegistrationResponseEntity.MarathiReligionByAdoptionOfWife,
+                AgeOfWife = GetAge(marriageRegistrationResponseEntity.AgeOfWife),
+                StatusOfWifeAtMarriage = marriageRegistrationResponseEntity.StatusOfWifeAtMarriage,
+                AddressOfWifeBeforeMarriage = marriageRegistrationResponseEntity.AddressOfWifeBeforeMarriage,
+                MarathiAddressOfWifeBeforeMarriage = marriageRegistrationResponseEntity.MarathiAddressOfWifeBeforeMarriage,
+
+                //Witness Details
+                NameofWitness1 = marriageRegistrationResponseEntity.NameofWitness1,
+                UidOfWitness1 = marriageRegistrationResponseEntity.UidOfWitness1,
+                AddressOfWitness1 = marriageRegistrationResponseEntity.AddressOfWitness1,
+                OccupationOfWitness1WithAddress = marriageRegistrationResponseEntity.OccupationOfWitness1WithAddress,
+                RelationWithCoupleOfWitness1 = marriageRegistrationResponseEntity.RelationWithCoupleOfWitness1,
+                NameofWitness2 = marriageRegistrationResponseEntity.NameofWitness2,
+                UidOfWitness2 = marriageRegistrationResponseEntity.UidOfWitness2,
+                AddressOfWitness2 = marriageRegistrationResponseEntity.AddressOfWitness2,
+                OccupationOfWitness2WithAddress = marriageRegistrationResponseEntity.OccupationOfWitness2WithAddress,
+                RelationWithCoupleOfWitness2 = marriageRegistrationResponseEntity.RelationWithCoupleOfWitness2,
+                NameOfWitness3 = marriageRegistrationResponseEntity.NameOfWitness3,
+                UidOfWitness3 = marriageRegistrationResponseEntity.UidOfWitness3,
+                AddressOfWitness3 = marriageRegistrationResponseEntity.AddressOfWitness3,
+                OccupationOfWitness3WithAddress = marriageRegistrationResponseEntity.OccupationOfWitness3WithAddress,
+                RelationWithCoupleOfWitness3 = marriageRegistrationResponseEntity.RelationWithCoupleOfWitness3,
+
+                MarathiNameofWitness1 = marriageRegistrationResponseEntity.MarathiNameofWitness1,
+                MarathiAddressOfWitness1 = marriageRegistrationResponseEntity.MarathiAddressOfWitness1,
+                MarathiOccupationOfWitness1WithAddress = marriageRegistrationResponseEntity.MarathiOccupationOfWitness1WithAddress,
+                MarathiRelationWithCoupleOfWitness1 = marriageRegistrationResponseEntity.MarathiRelationWithCoupleOfWitness1,
+                MarathiNameofWitness2 = marriageRegistrationResponseEntity.MarathiNameofWitness2,
+                MarathiAddressOfWitness2 = marriageRegistrationResponseEntity.MarathiAddressOfWitness2,
+                MarathiOccupationOfWitness2WithAddress = marriageRegistrationResponseEntity.MarathiOccupationOfWitness2WithAddress,
+                MarathiRelationWithCoupleOfWitness2 = marriageRegistrationResponseEntity.MarathiRelationWithCoupleOfWitness2,
+                MarathiNameOfWitness3 = marriageRegistrationResponseEntity.MarathiNameOfWitness3,
+                MarathiAddressOfWitness3 = marriageRegistrationResponseEntity.MarathiAddressOfWitness3,
+                MarathiOccupationOfWitness3WithAddress = marriageRegistrationResponseEntity.MarathiOccupationOfWitness3WithAddress,
+                MarathiRelationWithCoupleOfWitness3 = marriageRegistrationResponseEntity.MarathiRelationWithCoupleOfWitness3,
+
+                //Priest Details
+                PriestName = marriageRegistrationResponseEntity.PriestName,
+                PriestAddress = marriageRegistrationResponseEntity.PriestAddress,
+                PriestReligion = marriageRegistrationResponseEntity.PriestReligion,
+                PriestAge = marriageRegistrationResponseEntity.PriestAge,
+                MarathiPriestName = marriageRegistrationResponseEntity.MarathiPriestName,
+                MarathiPriestAddress = marriageRegistrationResponseEntity.MarathiPriestAddress,
+                MarathiPriestReligion = marriageRegistrationResponseEntity.MarathiPriestReligion,
+
+            };
+            return marriageRegistrationRequestEntity;
         }
     }   
 }
