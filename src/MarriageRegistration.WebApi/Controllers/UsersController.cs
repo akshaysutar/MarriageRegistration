@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace MarriageRegistration.WebApi.Controllers
 {
     [ApiController]
-    [ApiExceptionFilter]
+    //[ApiExceptionFilter]
     [Route("api/[Controller]")]
     public class UsersController : ControllerBase
     {
@@ -54,7 +54,7 @@ namespace MarriageRegistration.WebApi.Controllers
                         new AttributeDefinition
                         {
                             AttributeName = "ApplicationId",
-                            AttributeType = "N"
+                            AttributeType = "S"
                         }
                     },
                     KeySchema = new List<KeySchemaElement>
@@ -91,32 +91,6 @@ namespace MarriageRegistration.WebApi.Controllers
             return ModelFactory.CreateResponse(response, marriageRegistrationRequestEntity);
         }
 
-        // GET api/Users
-        [HttpGet("{id}")]
-        public async Task <MarriageRegistrationResponseDomainModel> GetDetails(int ApplicationId)
-        {
-            var request = ModelFactory.CreateScanItemRequest(ApplicationId, PendingRequestsTableName);
-            
-            var response = await _context.GetItemDetails(request);
-
-            StatusCode((int)response.HttpStatusCode);
-
-            return ModelFactory.CreateScanResponse(response);
-
-        }
-
-
-        // DELETE api/Users
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDetails(int id)
-        {
-            
-            var request = ModelFactory.CreateDeleteRequest(id, PendingRequestsTableName);
-
-            var response = await _context.DeleteDetails(request);
-
-            return StatusCode((int)response.HttpStatusCode);
-        }
 
     }
 }

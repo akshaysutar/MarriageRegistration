@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
+using System.Net.WebSockets;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2.Model;
 using MarriageRegistration.WebApi.Entities;
@@ -120,7 +122,7 @@ namespace MarriageRegistration.WebApi.Factory
                 TableName = approvedRequestsTableName,
                 Item = new Dictionary<string, AttributeValue>
                 {
-                    { "ApplicationId", new AttributeValue { N = marriageRegistrationRequestEntity.ApplicationId.ToString() }},
+                    { "ApplicationId", new AttributeValue { S = marriageRegistrationRequestEntity.ApplicationId.ToString() }},
                     { "applicantDistrict", new AttributeValue { S = marriageRegistrationRequestEntity.ApplicantDistrict }},
                     { "applicantTaluka", new AttributeValue { S = marriageRegistrationRequestEntity.ApplicantTaluka }},
                     { "MarriageDate", new AttributeValue { S = marriageRegistrationRequestEntity.MarriageDate.ToString() }},
@@ -147,7 +149,7 @@ namespace MarriageRegistration.WebApi.Factory
                     { "marathireligionByAdoptionOfHusband", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiReligionByAdoptionOfHusband }},
                     { "ageOfHusband", new AttributeValue { S = marriageRegistrationRequestEntity.AgeOfHusband.Years + marriageRegistrationRequestEntity.AgeOfHusband.Months }},
                     { "occupationOfHusbandWithAddress", new AttributeValue { S = marriageRegistrationRequestEntity.OccupationOfHusbandWithAddress }},
-                     { "occupationOfHusbandWithAddress", new AttributeValue { S = marriageRegistrationRequestEntity.OccupationOfHusbandWithAddress }},
+                    { "marathioccupationOfHusbandWithAddress", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiOccupationOfHusbandWithAddress }},
                     { "statusOfHusbandAtMarriage", new AttributeValue { S = marriageRegistrationRequestEntity.StatusOfHusbandAtMarriage }},
                     { "addressOfHusband", new AttributeValue { S = marriageRegistrationRequestEntity.AddressOfHusband }},
                     { "marathiaddressOfHusband", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiAddressOfHusband }},
@@ -222,24 +224,24 @@ namespace MarriageRegistration.WebApi.Factory
             return ageEntity;
         }
 
-        public static MarriageRegistrationResponseDomainModel CreateScanResponse(GetItemResponse response)
+        public static MarriageRegistrationResponseDomainModel CreateScanResponse(GetItemResponse response, string TableName)
         {
             var marriageRegistrationResponseDomainModel = new MarriageRegistrationResponseDomainModel
             {
                
-                marriageRegistrationResponseEntity = CreateMarriageRegistrationResponseEntity(response),
+                marriageRegistrationResponseEntity = CreateMarriageRegistrationResponseEntity(response,TableName),
             };
 
             return marriageRegistrationResponseDomainModel;
         }
 
-        private static MarriageRegistrationResponseEntity CreateMarriageRegistrationResponseEntity(GetItemResponse response)
+        private static MarriageRegistrationResponseEntity CreateMarriageRegistrationResponseEntity(GetItemResponse response, string TableName)
         {
             var marriageRegistrationResponseEntity = new MarriageRegistrationResponseEntity
             {
                 //Application Details
-                ApplicationId = response.Item["ApplicationId"].N,
-                CertificateNumber = response.Item["CertificateId"].S,
+                ApplicationId = response.Item["ApplicationId"].S,
+                CertificateNumber = getCertificateNumber(TableName, response),
                 ApplicantDistrict = response.Item["applicantDistrict"].S,
                 ApplicantTaluka = response.Item["applicantTaluka"].S,
                 MarriageDate = response.Item["MarriageDate"].S,
@@ -265,7 +267,7 @@ namespace MarriageRegistration.WebApi.Factory
                 MarathiOtherNameOfHusband = response.Item["marathiotherNameOfHusband"].S,
                 MarathiReligionByBirthOfHusband = response.Item["marathireligionByBirthOfHusband"].S,
                 MarathiReligionByAdoptionOfHusband = response.Item["marathireligionByAdoptionOfHusband"].S,
-                AgeOfHusband = response.Item["ageOfHusband"].S,
+                AgeOfHusband = getAgeEntityResponseOfHusband(response),
                 OccupationOfHusbandWithAddress = response.Item["occupationOfHusbandWithAddress"].S,
                 MarathiOccupationOfHusbandWithAddress = response.Item["marathioccupationOfHusbandWithAddress"].S,
                 StatusOfHusbandAtMarriage = response.Item["statusOfHusbandAtMarriage"].S,
@@ -286,7 +288,7 @@ namespace MarriageRegistration.WebApi.Factory
                 MarathiOtherNameOfWife = response.Item["marathiotherNameOfWife"].S,
                 MarathiReligionByBirthOfWife = response.Item["marathireligionByBirthOfWife"].S,
                 MarathiReligionByAdoptionOfWife = response.Item["marathireligionByAdoptionOfWife"].S,
-                AgeOfWife = response.Item["ageOfWife"].S,
+                AgeOfWife = getAgeEntityResponseOfWife(response),
                 StatusOfWifeAtMarriage = response.Item["statusOfWifeAtMarriage"].S,
                 AddressOfWifeBeforeMarriage = response.Item["addressOfWifeBeforeMarriage"].S,
                 MarathiAddressOfWifeBeforeMarriage = response.Item["marathiaddressOfWifeBeforeMarriage"].S,
@@ -338,33 +340,65 @@ namespace MarriageRegistration.WebApi.Factory
             return marriageRegistrationResponseEntity;
         }
 
-        public static GetItemRequest CreateScanItemRequest(int id, string TableName)
+        public static AgeEntity getAgeEntityResponseOfHusband(GetItemResponse response)
+        {
+            var ageEntity = new AgeEntity
+            {
+                Years = response.Item["ageOfHusband"].S,
+                Months = response.Item["ageOfHusband"].S,
+            };
+            return ageEntity;
+        }
+
+        public static AgeEntity getAgeEntityResponseOfWife(GetItemResponse response)
+        {
+            var ageEntity = new AgeEntity
+            {
+                Years = response.Item["ageOfWife"].S,
+                Months = response.Item["ageOfWife"].S,
+            };
+            return ageEntity;
+        }
+
+
+        public static string getCertificateNumber(string TableName, GetItemResponse response)
+        {
+            if (TableName == "ApprovedRequests")
+            {
+                return response.Item["CertificateId"].S;
+            }
+
+            return null;
+        }
+        
+
+        public static GetItemRequest CreateScanItemRequest(string id, string TableName)
         {
             var request = new GetItemRequest
             {
                 TableName = TableName,
-                Key = new Dictionary<string, AttributeValue> { { "ApplicationId", new AttributeValue { N = id.ToString() } } }
+                Key = new Dictionary<string, AttributeValue> { { "ApplicationId", new AttributeValue { S = id} } }
             };
 
             return request;
         }
 
-        public static DeleteItemRequest CreateDeleteRequest(int id, string TableName)
+        public static DeleteItemRequest CreateDeleteRequest(string id, string TableName)
         {
             var request = new DeleteItemRequest
             {
                 TableName = TableName,
-                Key = new Dictionary<string, AttributeValue> { { "ApplicationId", new AttributeValue { N = id.ToString() } } }
+                Key = new Dictionary<string, AttributeValue> { { "ApplicationId", new AttributeValue { S = id.ToString() } } }
             };
 
             return request;
         }
 
-        public static ScanRequest CreateScanItemRequest(string pendingRequestsTableName)
+        public static ScanRequest CreateScanItemRequest(string TableName)
         {
             var request = new ScanRequest
             {
-                TableName = pendingRequestsTableName,
+                TableName = TableName,
             };
 
             return request;
@@ -377,7 +411,7 @@ namespace MarriageRegistration.WebApi.Factory
                 TableName = TableName,
                 Item = new Dictionary<string, AttributeValue>
                 {
-                    { "ApplicationId", new AttributeValue { N = marriageRegistrationRequestEntity.ApplicationId.ToString() }},
+                    { "ApplicationId", new AttributeValue { S = marriageRegistrationRequestEntity.ApplicationId.ToString() }},
                     { "applicantDistrict", new AttributeValue { S = marriageRegistrationRequestEntity.ApplicantDistrict }},
                     { "applicantTaluka", new AttributeValue { S = marriageRegistrationRequestEntity.ApplicantTaluka }},
                     { "MarriageDate", new AttributeValue { S = marriageRegistrationRequestEntity.MarriageDate.ToString() }},
@@ -404,7 +438,7 @@ namespace MarriageRegistration.WebApi.Factory
                     { "marathireligionByAdoptionOfHusband", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiReligionByAdoptionOfHusband }},
                     { "ageOfHusband", new AttributeValue { S = marriageRegistrationRequestEntity.AgeOfHusband.Years + marriageRegistrationRequestEntity.AgeOfHusband.Months }},
                     { "occupationOfHusbandWithAddress", new AttributeValue { S = marriageRegistrationRequestEntity.OccupationOfHusbandWithAddress }},
-                     { "occupationOfHusbandWithAddress", new AttributeValue { S = marriageRegistrationRequestEntity.OccupationOfHusbandWithAddress }},
+                    { "marathioccupationOfHusbandWithAddress", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiOccupationOfHusbandWithAddress }},
                     { "statusOfHusbandAtMarriage", new AttributeValue { S = marriageRegistrationRequestEntity.StatusOfHusbandAtMarriage }},
                     { "addressOfHusband", new AttributeValue { S = marriageRegistrationRequestEntity.AddressOfHusband }},
                     { "marathiaddressOfHusband", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiAddressOfHusband }},
@@ -441,10 +475,10 @@ namespace MarriageRegistration.WebApi.Factory
                     { "addressOfWitness2", new AttributeValue { S = marriageRegistrationRequestEntity.AddressOfWitness2 }},
                     { "occupationOfWitness2WithAddress", new AttributeValue { S = marriageRegistrationRequestEntity.OccupationOfWitness2WithAddress }},
                     { "relationWithCoupleOfWitness2", new AttributeValue { S =marriageRegistrationRequestEntity.RelationWithCoupleOfWitness2 }},
-                    { "marathinameOfWitness1", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiNameofWitness2 }},
-                    { "marathiaddressOfWitness1", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiAddressOfWitness2 }},
-                    { "marathioccupationOfWitness1WithAddress", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiOccupationOfWitness2WithAddress }},
-                    { "marathirelationWithCoupleOfWitness1", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiRelationWithCoupleOfWitness2 }},
+                    { "marathinameOfWitness2", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiNameofWitness2 }},
+                    { "marathiaddressOfWitness2", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiAddressOfWitness2 }},
+                    { "marathioccupationOfWitness2WithAddress", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiOccupationOfWitness2WithAddress }},
+                    { "marathirelationWithCoupleOfWitness2", new AttributeValue { S = marriageRegistrationRequestEntity.MarathiRelationWithCoupleOfWitness2 }},
                     { "nameOfWitness3", new AttributeValue { S = marriageRegistrationRequestEntity.NameOfWitness3 }},
                     { "uidOfWitness3", new AttributeValue { S = marriageRegistrationRequestEntity.UidOfWitness3 }},
                     { "addressOfWitness3", new AttributeValue { S = marriageRegistrationRequestEntity.AddressOfWitness3 }},
@@ -485,12 +519,15 @@ namespace MarriageRegistration.WebApi.Factory
         {
             var marriageRegistrationResponseEntity = new MarriageRegistrationResponseEntity
             {
-                ApplicationId = marriageRegistrationRequestEntity.ApplicationId,
+                //Application Details
+                ApplicationId = marriageRegistrationRequestEntity.ApplicationId,              
                 ApplicantDistrict = marriageRegistrationRequestEntity.ApplicantDistrict,
                 ApplicantTaluka = marriageRegistrationRequestEntity.ApplicantTaluka,
                 MarriageDate = marriageRegistrationRequestEntity.MarriageDate,
                 MarriagePlace = marriageRegistrationRequestEntity.MarriagePlace,
+                MarathiMarriagePlace = marriageRegistrationRequestEntity.MarathiMarriagePlace,
                 LawOfMarriage = marriageRegistrationRequestEntity.LawOfMarriage,
+                MarathiLawOfMarriage = marriageRegistrationRequestEntity.MarathiLawOfMarriage,
                 DocumentsPresented = marriageRegistrationRequestEntity.DocumentsPresented,
                 IsMarriageRegisteredAlready = marriageRegistrationRequestEntity.IsMarriageRegisteredAlready,
                 SubmissionDate = marriageRegistrationRequestEntity.SubmissionDate,
@@ -499,26 +536,41 @@ namespace MarriageRegistration.WebApi.Factory
                 HusbandFirstName = marriageRegistrationRequestEntity.HusbandFirstName,
                 HusbandMiddleName = marriageRegistrationRequestEntity.HusbandMiddleName,
                 HusbandLastName = marriageRegistrationRequestEntity.HusbandLastName,
+                MarathiHusbandFirstName = marriageRegistrationRequestEntity.MarathiHusbandFirstName,
+                MarathiHusbandMiddleName = marriageRegistrationRequestEntity.MarathiHusbandMiddleName,
+                MarathiHusbandLastName = marriageRegistrationRequestEntity.MarathiHusbandLastName,
                 UidOfHusband = marriageRegistrationRequestEntity.UidOfHusband,
                 OtherNameOfHusband = marriageRegistrationRequestEntity.OtherNameOfHusband,
+                MarathiOtherNameOfHusband = marriageRegistrationRequestEntity.MarathiOtherNameOfHusband,
                 ReligionByBirthOfHusband = marriageRegistrationRequestEntity.ReligionByBirthOfHusband,
+                MarathiReligionByBirthOfHusband = marriageRegistrationRequestEntity.MarathiReligionByBirthOfHusband,
                 ReligionByAdoptionOfHusband = marriageRegistrationRequestEntity.ReligionByAdoptionOfHusband,
-                AgeOfHusband = marriageRegistrationRequestEntity.AgeOfHusband,
+                MarathiReligionByAdoptionOfHusband = marriageRegistrationRequestEntity.MarathiReligionByAdoptionOfHusband,
+                AgeOfHusband = GetAge(marriageRegistrationRequestEntity.AgeOfHusband),
                 OccupationOfHusbandWithAddress = marriageRegistrationRequestEntity.OccupationOfHusbandWithAddress,
+                MarathiOccupationOfHusbandWithAddress = marriageRegistrationRequestEntity.MarathiOccupationOfHusbandWithAddress,
                 StatusOfHusbandAtMarriage = marriageRegistrationRequestEntity.StatusOfHusbandAtMarriage,
                 AddressOfHusband = marriageRegistrationRequestEntity.AddressOfHusband,
+                MarathiAddressOfHusband = marriageRegistrationRequestEntity.MarathiAddressOfHusband,
 
                 //Wife's Details
                 WifeFirstName = marriageRegistrationRequestEntity.WifeFirstName,
                 WifeMiddleName = marriageRegistrationRequestEntity.WifeMiddleName,
                 WifeLastName = marriageRegistrationRequestEntity.WifeLastName,
+                MarathiWifeFirstName = marriageRegistrationRequestEntity.MarathiWifeFirstName,
+                MarathiWifeMiddleName = marriageRegistrationRequestEntity.MarathiWifeMiddleName,
+                MarathiWifeLastName = marriageRegistrationRequestEntity.MarathiWifeLastName,
                 UidOfWife = marriageRegistrationRequestEntity.UidOfWife,
                 OtherNameOfWife = marriageRegistrationRequestEntity.OtherNameOfWife,
+                MarathiOtherNameOfWife = marriageRegistrationRequestEntity.MarathiOtherNameOfWife,
                 ReligionByBirthOfWife = marriageRegistrationRequestEntity.ReligionByBirthOfWife,
                 ReligionByAdoptionOfWife = marriageRegistrationRequestEntity.ReligionByAdoptionOfWife,
-                AgeOfWife = marriageRegistrationRequestEntity.AgeOfWife,
+                MarathiReligionByBirthOfWife = marriageRegistrationRequestEntity.MarathiReligionByBirthOfWife,
+                MarathiReligionByAdoptionOfWife = marriageRegistrationRequestEntity.MarathiReligionByAdoptionOfWife,
+                AgeOfWife = GetAge(marriageRegistrationRequestEntity.AgeOfWife),
                 StatusOfWifeAtMarriage = marriageRegistrationRequestEntity.StatusOfWifeAtMarriage,
                 AddressOfWifeBeforeMarriage = marriageRegistrationRequestEntity.AddressOfWifeBeforeMarriage,
+                MarathiAddressOfWifeBeforeMarriage = marriageRegistrationRequestEntity.MarathiAddressOfWifeBeforeMarriage,
 
                 //Witness Details
                 NameofWitness1 = marriageRegistrationRequestEntity.NameofWitness1,
@@ -537,11 +589,28 @@ namespace MarriageRegistration.WebApi.Factory
                 OccupationOfWitness3WithAddress = marriageRegistrationRequestEntity.OccupationOfWitness3WithAddress,
                 RelationWithCoupleOfWitness3 = marriageRegistrationRequestEntity.RelationWithCoupleOfWitness3,
 
+                MarathiNameofWitness1 = marriageRegistrationRequestEntity.MarathiNameofWitness1,
+                MarathiAddressOfWitness1 = marriageRegistrationRequestEntity.MarathiAddressOfWitness1,
+                MarathiOccupationOfWitness1WithAddress = marriageRegistrationRequestEntity.MarathiOccupationOfWitness1WithAddress,
+                MarathiRelationWithCoupleOfWitness1 = marriageRegistrationRequestEntity.MarathiRelationWithCoupleOfWitness1,
+                MarathiNameofWitness2 = marriageRegistrationRequestEntity.MarathiNameofWitness2,
+                MarathiAddressOfWitness2 = marriageRegistrationRequestEntity.MarathiAddressOfWitness2,
+                MarathiOccupationOfWitness2WithAddress = marriageRegistrationRequestEntity.MarathiOccupationOfWitness2WithAddress,
+                MarathiRelationWithCoupleOfWitness2 = marriageRegistrationRequestEntity.MarathiRelationWithCoupleOfWitness2,
+                MarathiNameOfWitness3 = marriageRegistrationRequestEntity.MarathiNameOfWitness3,
+                MarathiAddressOfWitness3 = marriageRegistrationRequestEntity.MarathiAddressOfWitness3,
+                MarathiOccupationOfWitness3WithAddress = marriageRegistrationRequestEntity.MarathiOccupationOfWitness3WithAddress,
+                MarathiRelationWithCoupleOfWitness3 = marriageRegistrationRequestEntity.MarathiRelationWithCoupleOfWitness3,
+
                 //Priest Details
                 PriestName = marriageRegistrationRequestEntity.PriestName,
                 PriestAddress = marriageRegistrationRequestEntity.PriestAddress,
                 PriestReligion = marriageRegistrationRequestEntity.PriestReligion,
                 PriestAge = marriageRegistrationRequestEntity.PriestAge,
+                MarathiPriestName = marriageRegistrationRequestEntity.MarathiPriestName,
+                MarathiPriestAddress = marriageRegistrationRequestEntity.MarathiPriestAddress,
+                MarathiPriestReligion = marriageRegistrationRequestEntity.MarathiPriestReligion,
+
 
             };
 
@@ -563,7 +632,7 @@ namespace MarriageRegistration.WebApi.Factory
             var marriageRegistrationResponseEntity = new MarriageRegistrationResponseEntity()
             {
                 //Application Details
-                ApplicationId = Item["ApplicationId"].N,
+                ApplicationId = Item["ApplicationId"].S,
                 ApplicantDistrict = Item["applicantDistrict"].S,
                 ApplicantTaluka = Item["applicantTaluka"].S,
                 MarriageDate = Item["MarriageDate"].S,
@@ -589,7 +658,7 @@ namespace MarriageRegistration.WebApi.Factory
                 MarathiOtherNameOfHusband = Item["marathiotherNameOfHusband"].S,
                 MarathiReligionByBirthOfHusband = Item["marathireligionByBirthOfHusband"].S,
                 MarathiReligionByAdoptionOfHusband = Item["marathireligionByAdoptionOfHusband"].S,
-                AgeOfHusband = Item["ageOfHusband"].S,
+                //AgeOfHusband = Item["ageOfHusband"].S,
                 OccupationOfHusbandWithAddress = Item["occupationOfHusbandWithAddress"].S,
                 MarathiOccupationOfHusbandWithAddress = Item["marathioccupationOfHusbandWithAddress"].S,
                 StatusOfHusbandAtMarriage = Item["statusOfHusbandAtMarriage"].S,
@@ -610,7 +679,7 @@ namespace MarriageRegistration.WebApi.Factory
                 MarathiOtherNameOfWife = Item["marathiotherNameOfWife"].S,
                 MarathiReligionByBirthOfWife = Item["marathireligionByBirthOfWife"].S,
                 MarathiReligionByAdoptionOfWife = Item["marathireligionByAdoptionOfWife"].S,
-                AgeOfWife = Item["ageOfWife"].S,
+               //AgeOfWife = Item["ageOfWife"].S,
                 StatusOfWifeAtMarriage = Item["statusOfWifeAtMarriage"].S,
                 AddressOfWifeBeforeMarriage = Item["addressOfWifeBeforeMarriage"].S,
                 MarathiAddressOfWifeBeforeMarriage = Item["marathiaddressOfWifeBeforeMarriage"].S,
@@ -662,103 +731,26 @@ namespace MarriageRegistration.WebApi.Factory
             return marriageRegistrationResponseEntity;
         }
 
-        public static GetItemRequest CreateApprovedRequest(int id, string TableName)
+        public static GetItemRequest CreateApprovedRequest(string id, string TableName)
         {
             var request = new GetItemRequest
             {
                 TableName = TableName,
-                Key = new Dictionary<string, AttributeValue> { { "CertificateNumber", new AttributeValue { N = id.ToString() } } }
+                Key = new Dictionary<string, AttributeValue> { { "CertificateNumber", new AttributeValue { S = id.ToString() } } }
             };
 
             return request;
         }
 
-        public static MarriageRegistrationResponseDomainModel CreateApprovedResponse(GetItemResponse response)
-        {
-            var marriageRegistrationResponseDomainModel = new MarriageRegistrationResponseDomainModel
-            {
-                
-                marriageRegistrationResponseEntity = CreateMarriageRegistrationResponseEntityModel(response),
-            };
-
-            return marriageRegistrationResponseDomainModel;
-        }
-
-        private static MarriageRegistrationResponseEntity CreateMarriageRegistrationResponseEntityModel(GetItemResponse response)
-        {
-            var marriageRegistrationResponseEntity = new MarriageRegistrationResponseEntity
-            {
-                ApplicationId = response.Item["ApplicationId"].N,
-                CertificateNumber = response.Item["CertificateId"].S,
-                ApplicantDistrict = response.Item["applicantDistrict"].S,
-                ApplicantTaluka = response.Item["applicantTaluka"].S,
-                MarriageDate = response.Item["MarriageDate"].S,
-                MarriagePlace = response.Item["marriagePlace"].S,
-                LawOfMarriage = response.Item["lawOfMarriage"].S,
-                DocumentsPresented = response.Item["documents_presented"].S,
-                IsMarriageRegisteredAlready = response.Item["isMarriageRegisterAlready"].BOOL,
-                SubmissionDate = response.Item["submissionDate"].S,
-
-                //Husbands's Details
-                HusbandFirstName = response.Item["husbandFirstName"].S,
-                HusbandMiddleName = response.Item["husbandMiddleName"].S,
-                HusbandLastName = response.Item["husbandLastName"].S,
-                UidOfHusband = response.Item["uidOfHusband"].S,
-                OtherNameOfHusband = response.Item["otherNameOfHusband"].S,
-                ReligionByBirthOfHusband = response.Item["religionByBirthOfHusband"].S,
-                ReligionByAdoptionOfHusband = response.Item["religionByAdoptionOfHusband"].S,
-                AgeOfHusband = response.Item["ageOfHusband"].S,
-                OccupationOfHusbandWithAddress = response.Item["occupationOfHusbandWithAddress"].S,
-                StatusOfHusbandAtMarriage = response.Item["statusOfHusbandAtMarriage"].S,
-                AddressOfHusband = response.Item["addressOfHusband"].S,
-
-                //Wife's Details
-                WifeFirstName = response.Item["wifeFirstName"].S,
-                WifeMiddleName = response.Item["wifeMiddleName"].S,
-                WifeLastName = response.Item["wifeLastName"].S,
-                UidOfWife = response.Item["uidOfWife"].S,
-                OtherNameOfWife = response.Item["otherNameOfWife"].S,
-                ReligionByBirthOfWife = response.Item["religionByBirthOfWife"].S,
-                ReligionByAdoptionOfWife = response.Item["religionByAdoptionOfWife"].S,
-                AgeOfWife = response.Item["ageOfWife"].S,
-                StatusOfWifeAtMarriage = response.Item["statusOfWifeAtMarriage"].S,
-                AddressOfWifeBeforeMarriage = response.Item["addressOfWifeBeforeMarriage"].S,
-
-                //Witness Details
-                NameofWitness1 = response.Item["nameOfWitness1"].S,
-                UidOfWitness1 = response.Item["uidOfWitness1"].S,
-                AddressOfWitness1 = response.Item["addressOfWitness1"].S,
-                OccupationOfWitness1WithAddress = response.Item["occupationOfWitness1WithAddress"].S,
-                RelationWithCoupleOfWitness1 = response.Item["relationWithCoupleOfWitness1"].S,
-                NameofWitness2 = response.Item["nameOfWitness2"].S,
-                UidOfWitness2 = response.Item["uidOfWitness2"].S,
-                AddressOfWitness2 = response.Item["addressOfWitness2"].S,
-                OccupationOfWitness2WithAddress = response.Item["occupationOfWitness2WithAddress"].S,
-                RelationWithCoupleOfWitness2 = response.Item["relationWithCoupleOfWitness2"].S,
-                NameOfWitness3 = response.Item["nameOfWitness3"].S,
-                UidOfWitness3 = response.Item["uidOfWitness3"].S,
-                AddressOfWitness3 = response.Item["addressOfWitness3"].S,
-                OccupationOfWitness3WithAddress = response.Item["occupationOfWitness3WithAddress"].S,
-                RelationWithCoupleOfWitness3 = response.Item["relationWithCoupleOfWitness3"].S,
-
-                //Priest Details
-                PriestName = response.Item["priestName"].S,
-                PriestAddress = response.Item["priestAddress"].S,
-                PriestReligion = response.Item["priestReligion"].S,
-                PriestAge = response.Item["priestAge"].S,
-
-            };
-
-            return marriageRegistrationResponseEntity;
-        }
-
+       
+       
         public static MarriageRegistrationRequestEntity GetApproveRequestEntity(string CertificateNumber , MarriageRegistrationResponseEntity marriageRegistrationResponseEntity)
         {
             var marriageRegistrationRequestEntity = new MarriageRegistrationRequestEntity
             {
                 //Application Details
                 ApplicationId = marriageRegistrationResponseEntity.ApplicationId,
-                CertificateNumber = marriageRegistrationResponseEntity.CertificateNumber,
+                CertificateNumber = CertificateNumber,
                 ApplicantDistrict = marriageRegistrationResponseEntity.ApplicantDistrict,
                 ApplicantTaluka = marriageRegistrationResponseEntity.ApplicantTaluka,
                 MarriageDate = marriageRegistrationResponseEntity.MarriageDate,
@@ -851,6 +843,15 @@ namespace MarriageRegistration.WebApi.Factory
 
             };
             return marriageRegistrationRequestEntity;
+        }
+        private static AgeEntity GetAge(AgeEntity age)
+        {
+            var ageEntity = new AgeEntity
+            {
+                Years = age.Years,
+                Months = age.Months
+            };
+            return ageEntity;
         }
     }   
 }
