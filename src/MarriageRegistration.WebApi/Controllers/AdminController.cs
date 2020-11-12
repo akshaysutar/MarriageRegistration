@@ -100,20 +100,20 @@ namespace MarriageRegistration.WebApi.Controllers
 
             var response = await _context.GetItemDetails(request);
 
-            return ModelFactory.CreateScanResponse(response, PendingRequestsTableName);
+            return ModelFactory.CreateGetItemResponse(response, PendingRequestsTableName);
         }
 
         // GET api/Admin/approvedrecords/{CertificateId}
         [HttpGet]
-        [Route("approvedrecords/{CertificateId}")]
-        public async Task<MarriageRegistrationResponseDomainModel> GetApprovedRequestDetails(string CertificateId)
+        [Route("approvedrecords")]
+        public async Task<MarriageRegistrationResponseDomainModel> GetApprovedRequestDetails([FromQuery] string CertificateId)
         {
             
             var request = ModelFactory.CreateApprovedRequest(CertificateId, ApprovedRequestsTableName);
 
             var response = await _context.GetItemDetails(request);
 
-            return ModelFactory.CreateScanResponse(response, ApprovedRequestsTableName);
+            return ModelFactory.CreateGetItemResponse(response, ApprovedRequestsTableName);
         }
 
         // DELETE api/Admin/reject/{ApplicationId}
@@ -138,7 +138,7 @@ namespace MarriageRegistration.WebApi.Controllers
 
             var response = await _context.GetItemDetails(request);
 
-            var recordToApprove = ModelFactory.CreateScanResponse(response, PendingRequestsTableName);
+            var recordToApprove = ModelFactory.CreateGetItemResponse(response, PendingRequestsTableName);
 
             var CertificateNumber = IdGenerator.GenerateCertificateNumber();
             

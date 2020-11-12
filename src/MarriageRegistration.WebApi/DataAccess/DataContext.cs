@@ -22,32 +22,59 @@ namespace MarriageRegistration.WebApi.DataAccess
        
         public async Task<PutItemResponse> SaveDetails(PutItemRequest request, MarriageRegistrationRequestEntity marriageRegistrationRequestEntity)
         {
-            var response = await _amazonDynamoDb.PutItemAsync(request);
+            try
+            {
+                var response = await _amazonDynamoDb.PutItemAsync(request);
 
-            return response;
-        }
+                 return response;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+}
 
         public async Task<GetItemResponse> GetItemDetails(GetItemRequest request)
         {
-            var response = await _amazonDynamoDb.GetItemAsync(request);
+            try
+            {
+                 var response = await _amazonDynamoDb.GetItemAsync(request);
 
-            return response;
-            
-        }
+                 return response;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+
+}
 
         public async Task<DeleteItemResponse> DeleteDetails(DeleteItemRequest request)
         {
+            try
+            {
+                 var response = await _amazonDynamoDb.DeleteItemAsync(request);
 
-            var response = await _amazonDynamoDb.DeleteItemAsync(request);
-
-            return response;
-        }
+                 return response;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+}
 
         public async Task<ScanResponse> GetPendingRecords(ScanRequest request)
         {
-            var response = await _amazonDynamoDb.ScanAsync(request);
-
-            return response;
+            try
+            {
+                var response = await _amazonDynamoDb.ScanAsync(request);
+                return response;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            
 
         }
 
