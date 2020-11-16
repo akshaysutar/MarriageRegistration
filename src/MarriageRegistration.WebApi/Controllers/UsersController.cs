@@ -5,7 +5,7 @@ using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
 using MarriageRegistration.WebApi.DataAccess;
 using MarriageRegistration.WebApi.Factory;
-using MarriageRegistration.WebApi.Factory.IdGeneration;
+using MarriageRegistration.WebApi.Services;
 using MarriageRegistration.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,13 +17,13 @@ namespace MarriageRegistration.WebApi.Controllers
     [Route("api/[Controller]")]
     public class UsersController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly IDataContext _context;
 
         private readonly IAmazonDynamoDB _amazonDynamoDb;
 
-        private const string PendingRequestsTableName = "PendingRequests";
+        private const string PendingRequestsTableName = "LatestCertificateNumber";
 
-        public UsersController(DataContext context, IAmazonDynamoDB amazonDynamoDb)
+        public UsersController(IDataContext context, IAmazonDynamoDB amazonDynamoDb)
         {
             _context = context;
             _amazonDynamoDb = amazonDynamoDb;
@@ -53,7 +53,7 @@ namespace MarriageRegistration.WebApi.Controllers
                     {
                         new AttributeDefinition
                         {
-                            AttributeName = "ApplicationId",
+                            AttributeName = "CertificateNumber",
                             AttributeType = "S"
                         }
                     },
@@ -61,7 +61,7 @@ namespace MarriageRegistration.WebApi.Controllers
                     {
                         new KeySchemaElement
                         {
-                            AttributeName = "ApplicationId",
+                            AttributeName = "CertificateNumber",
                             KeyType = "HASH"  //Partition key
                         }
                     },

@@ -7,7 +7,7 @@ using Amazon.DynamoDBv2.Model;
 using MarriageRegistration.WebApi.DataAccess;
 using MarriageRegistration.WebApi.Entities;
 using MarriageRegistration.WebApi.Factory;
-using MarriageRegistration.WebApi.Factory.IdGeneration;
+using MarriageRegistration.WebApi.Services;
 using MarriageRegistration.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +19,7 @@ namespace MarriageRegistration.WebApi.Controllers
     public class AdminController : ControllerBase
     {
 
-        private readonly DataContext _context;
+        private readonly IDataContext _context;
 
         private readonly IAmazonDynamoDB _amazonDynamoDb;
 
@@ -27,7 +27,7 @@ namespace MarriageRegistration.WebApi.Controllers
 
         private const string ApprovedRequestsTableName = "ApprovedRequests";
 
-        public AdminController(DataContext context, IAmazonDynamoDB amazonDynamoDb)
+        public AdminController(IDataContext context, IAmazonDynamoDB amazonDynamoDb)
         {
             _context = context;
             _amazonDynamoDb = amazonDynamoDb;

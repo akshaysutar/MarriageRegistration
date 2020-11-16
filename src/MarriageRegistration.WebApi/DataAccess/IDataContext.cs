@@ -11,5 +11,12 @@ namespace MarriageRegistration.WebApi.DataAccess
     {
         public Task<PutItemResponse> SaveDetails(PutItemRequest request, MarriageRegistrationRequestEntity marriageRegistrationRequestEntity);
 
+        public Task<GetItemResponse> GetItemDetails(GetItemRequest request);
+
+        public Task<DeleteItemResponse> DeleteDetails(DeleteItemRequest request);
+
+        public Task<ScanResponse> GetPendingRecords(ScanRequest request);
+
+
     }
 }

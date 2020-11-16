@@ -32,7 +32,7 @@ namespace MarriageRegistration.WebApi
         // This method gets called by the runtime. Use this method to add services to the container
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<DataContext>();
+            services.AddTransient<IDataContext>();
             var dynamoDbConfig = _config.GetSection("DynamoDb");
             var runLocalDynamoDb = dynamoDbConfig.GetValue<bool>("LocalMode");
 
