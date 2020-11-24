@@ -32,7 +32,7 @@ namespace MarriageRegistration.WebApi.DataAccess
             {
                 throw ex;
             }
-}
+        }
 
         public async Task<GetItemResponse> GetItemDetails(GetItemRequest request)
         {
@@ -78,5 +78,18 @@ namespace MarriageRegistration.WebApi.DataAccess
 
         }
 
+        public async Task<PutItemResponse> PutItem(PutItemRequest request)
+        {
+            try
+            {
+                var response = await _amazonDynamoDb.PutItemAsync(request);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

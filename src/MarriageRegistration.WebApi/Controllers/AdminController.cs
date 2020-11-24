@@ -21,16 +21,19 @@ namespace MarriageRegistration.WebApi.Controllers
 
         private readonly IDataContext _context;
 
+        private readonly IdGenerator _idGenerator;
+
         private readonly IAmazonDynamoDB _amazonDynamoDb;
 
         private const string PendingRequestsTableName = "PendingRequests";
 
         private const string ApprovedRequestsTableName = "ApprovedRequests";
 
-        public AdminController(IDataContext context, IAmazonDynamoDB amazonDynamoDb)
+        public AdminController(IDataContext context, IAmazonDynamoDB amazonDynamoDb, IdGenerator idGenerator)
         {
             _context = context;
             _amazonDynamoDb = amazonDynamoDb;
+            _idGenerator = idGenerator;
         }
 
         // GET api/Admin/init
@@ -140,7 +143,7 @@ namespace MarriageRegistration.WebApi.Controllers
 
             var recordToApprove = ModelFactory.CreateGetItemResponse(response, PendingRequestsTableName);
 
-            var CertificateNumber = IdGenerator.GenerateCertificateNumber();
+            var CertificateNumber = await _idGenerator.GenerateCertificateNumber();
             
             var marriageRegistrationRequestEntity = ModelFactory.GetApproveRequestEntity(CertificateNumber, recordToApprove.marriageRegistrationResponseEntity);
 
@@ -151,6 +154,7 @@ namespace MarriageRegistration.WebApi.Controllers
             var deleteRequest = ModelFactory.CreateDeleteRequest(ApplicationId, PendingRequestsTableName);
 
             var deleteResponse = await _context.DeleteDetails(deleteRequest);
+
             //return ModelFactory.CreateResponse(requestOfApprove, marriageRegistrationRequestEntity);
 
             return CertificateNumber;

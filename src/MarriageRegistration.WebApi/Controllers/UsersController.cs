@@ -21,7 +21,9 @@ namespace MarriageRegistration.WebApi.Controllers
 
         private readonly IAmazonDynamoDB _amazonDynamoDb;
 
-        private const string PendingRequestsTableName = "LatestCertificateNumber";
+        private const string PendingRequestsTableName = "PendingRequests";
+
+        private const string TableName = "LatestCertificateNumber";
 
         public UsersController(IDataContext context, IAmazonDynamoDB amazonDynamoDb)
         {
@@ -49,6 +51,52 @@ namespace MarriageRegistration.WebApi.Controllers
                 var createRequest = new CreateTableRequest
                 {
                     TableName = PendingRequestsTableName,
+                    AttributeDefinitions = new List<AttributeDefinition>
+                    {
+                        new AttributeDefinition
+                        {
+                            AttributeName = "ApplicationId",
+                            AttributeType = "S"
+                        }
+                    },
+                    KeySchema = new List<KeySchemaElement>
+                    {
+                        new KeySchemaElement
+                        {
+                            AttributeName = "ApplicationId",
+                            KeyType = "HASH"  //Partition key
+                        }
+                    },
+                    ProvisionedThroughput = new ProvisionedThroughput
+                    {
+                        ReadCapacityUnits = 2,
+                        WriteCapacityUnits = 2
+                    }
+                };
+
+                await _amazonDynamoDb.CreateTableAsync(createRequest);
+            }
+        }
+
+        // GET api/Users/initc
+        [HttpGet]
+        [Route("initc")]
+        public async Task Initialise1()
+        {
+            var request = new ListTablesRequest
+            {
+                Limit = 10
+            };
+
+            var response = await _amazonDynamoDb.ListTablesAsync(request);
+
+            var results = response.TableNames;
+
+            if (!results.Contains(TableName))
+            {
+                var createRequest = new CreateTableRequest
+                {
+                    TableName = TableName,
                     AttributeDefinitions = new List<AttributeDefinition>
                     {
                         new AttributeDefinition

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
 using MarriageRegistration.WebApi.DataAccess;
+using MarriageRegistration.WebApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,7 +33,8 @@ namespace MarriageRegistration.WebApi
         // This method gets called by the runtime. Use this method to add services to the container
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IDataContext>();
+            services.AddTransient<IDataContext, DataContext>();
+            services.AddTransient<IdGenerator>();
             var dynamoDbConfig = _config.GetSection("DynamoDb");
             var runLocalDynamoDb = dynamoDbConfig.GetValue<bool>("LocalMode");
 

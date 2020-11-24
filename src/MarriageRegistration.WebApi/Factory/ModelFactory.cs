@@ -739,7 +739,7 @@ namespace MarriageRegistration.WebApi.Factory
 
        
        
-        public static MarriageRegistrationRequestEntity GetApproveRequestEntity(string CertificateNumber , MarriageRegistrationResponseEntity marriageRegistrationResponseEntity)
+        public static MarriageRegistrationRequestEntity GetApproveRequestEntity(string CertificateNumber, MarriageRegistrationResponseEntity marriageRegistrationResponseEntity)
         {
             var marriageRegistrationRequestEntity = new MarriageRegistrationRequestEntity
             {

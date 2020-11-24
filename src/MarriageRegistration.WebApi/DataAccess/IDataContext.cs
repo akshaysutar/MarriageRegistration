@@ -17,6 +17,6 @@ namespace MarriageRegistration.WebApi.DataAccess
 
         public Task<ScanResponse> GetPendingRecords(ScanRequest request);
 
-
+        public Task<PutItemResponse> PutItem(PutItemRequest request);
     }
 }

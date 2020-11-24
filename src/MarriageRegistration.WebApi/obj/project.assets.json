@@ -6518,8 +6518,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Akshay\\.nuget\\packages\\": {},
-    "C:\\Microsoft\\Xamarin\\NuGet\\": {}
+    "C:\\Users\\Akshay\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
@@ -6530,13 +6529,9 @@
       "packagesPath": "C:\\Users\\Akshay\\.nuget\\packages\\",
       "outputPath": "D:\\Dotnet\\MarriageRegistration.WebApi\\src\\MarriageRegistration.WebApi\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Microsoft\\Xamarin\\NuGet\\"
-      ],
       "configFilePaths": [
         "C:\\Users\\Akshay\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
