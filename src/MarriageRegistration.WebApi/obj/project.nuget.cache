@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "n5uCx7jDlRjoKtUTRl5698T5sp1MO21bJg96mFmPPckJtCnRGf8X+tayHK7y8BFDaQaKPAWwK2Bk4izCAogb5Q==",
+  "dgSpecHash": "N/oDop8EU3JQqVJOFd19OhqeNRJMofe34OA+kUPinDzHYyIIkZz6n3cUoXbg8eKYwzsucsbOtGnA70Nf1+xvxQ==",
   "success": true,
   "projectFilePath": "D:\\Dotnet\\MarriageRegistration.WebApi\\src\\MarriageRegistration.WebApi\\MarriageRegistration.WebApi.csproj",
   "expectedPackageFiles": [
@@ -127,7 +127,8 @@
     "C:\\Users\\Akshay\\.nuget\\packages\\system.threading.timer\\4.3.0\\system.threading.timer.4.3.0.nupkg.sha512",
     "C:\\Users\\Akshay\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\Akshay\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
-    "C:\\Users\\Akshay\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.2\\microsoft.aspnetcore.app.ref.3.1.2.nupkg.sha512"
+    "C:\\Users\\Akshay\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.8\\microsoft.aspnetcore.app.ref.3.1.8.nupkg.sha512",
+    "C:\\Users\\Akshay\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.9\\microsoft.netcore.app.host.win-x64.3.1.9.nupkg.sha512"
   ],
   "logs": []
 }
